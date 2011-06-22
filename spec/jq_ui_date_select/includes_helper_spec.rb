@@ -68,12 +68,56 @@ describe "InludesHelper" do
 
   end
 
-  describe "The jq_ui_javascripts function" do
+  describe "The jq_ui_date_select_includes function" do
+
+    it "has a javascript tag for jQuery" do
+      jq_ui_date_select_includes.should include("<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js\" type=\"text/javascript\"></script>")
+    end
+
+    it "has a javascript tag for jQuery UI" do
+      jq_ui_date_select_includes.should include("<script src=\"http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/jquery-ui.min.js\" type=\"text/javascript\"></script>")
+    end
 
     describe "with no args" do
 
-      it "has a style sheetlink tag" do
+      it "has the :base stylesheet link tag" do
         jq_ui_date_select_includes.should include("<link href=\"http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/themes/base/jquery-ui.css\" media=\"screen\" rel=\"stylesheet\" type=\"text/css\" />")
+      end
+
+    end
+
+    describe "with args of {:style => :none}" do
+
+      it "has no stylesheet" do
+        jq_ui_date_select_includes(:style => :none).should_not include("<link href=\"http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/themes/")
+      end
+
+    end
+
+    describe "with args of {:style => nil}" do
+
+      it "has no stylesheet" do
+        jq_ui_date_select_includes(:style => nil).should_not include("<link href=\"http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/themes/")
+      end
+
+    end
+
+    describe "with args of {:style => false}" do
+
+      it "has no stylesheet" do
+        jq_ui_date_select_includes(:style => false).should_not include("<link href=\"http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/themes/")
+      end
+
+    end
+
+    STYLES.each do |style|
+
+      describe "with args of {:style => #{style[0]}}" do
+
+        it "has the #{style[0]} stylesheet link tag" do
+          jq_ui_date_select_includes(:style => style[0]).should include("<link href=\"http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/themes/#{style[1]}/jquery-ui.css\" media=\"screen\" rel=\"stylesheet\" type=\"text/css\" />")
+        end
+
       end
 
     end

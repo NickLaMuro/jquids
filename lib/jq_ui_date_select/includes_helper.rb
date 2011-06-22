@@ -15,9 +15,16 @@ module JqUiDateSelect
       includes
     end
 
-    def jq_ui_date_select_includes
-      stylesheet_link_tag(jq_ui_stylesheet)
-      #jq_ui_javascripts
+    def jq_ui_date_select_includes(options = {})
+      html = ""
+
+      if options.has_key?(:style)
+          html <<  stylesheet_link_tag(jq_ui_stylesheet(options[:style])) + "\n" unless options[:style] == nil or options[:style] == :none or options[:style] == false
+      else
+        html << stylesheet_link_tag(jq_ui_stylesheet) + "\n"
+      end
+
+      html << javascript_include_tag(jq_ui_javascripts)
     end
 
   end
