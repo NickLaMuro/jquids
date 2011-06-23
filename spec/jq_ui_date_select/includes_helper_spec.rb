@@ -78,6 +78,10 @@ describe "InludesHelper" do
       jq_ui_date_select_includes.should include("<script src=\"http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/jquery-ui.min.js\" type=\"text/javascript\"></script>")
     end
 
+    it "has the options parsing script" do
+      jq_ui_date_select_includes.should include('<script type="text/javascript">$(document).ready(function(){$(".jq_ui_dp_ds").each(function(){var s=$(this).attr("data-jqdatepicker");$(this).attr("data-jqdatepicker")?$(this).datepicker(JSON.parse(s)):$(this).datepicker()})});</script>')
+    end
+
     describe "with no args" do
 
       it "has the :base stylesheet link tag" do

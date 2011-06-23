@@ -11,6 +11,14 @@ The projects intent is to simulate the ease of use of the original while:
 - Using the hosted jQuery UI infastructure to avoid local dependencies
 
 
+TODO
+----
+
+- Allow for the choice to use different versions of jQuery and jQuery UI, or
+  not include them all together
+- Allow for the setting of Global options.
+
+
 Contribute/Suggestions
 ----------------------
 Suggestions and contributions to the project are welcome.

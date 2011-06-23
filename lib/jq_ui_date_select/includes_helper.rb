@@ -25,6 +25,7 @@ module JqUiDateSelect
       end
 
       html << javascript_include_tag(jq_ui_javascripts)
+      html << '<script type="text/javascript">$(document).ready(function(){$(".jq_ui_dp_ds").each(function(){var s=$(this).attr("data-jqdatepicker");$(this).attr("data-jqdatepicker")?$(this).datepicker(JSON.parse(s)):$(this).datepicker()})});</script>'
     end
 
   end
