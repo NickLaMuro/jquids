@@ -79,7 +79,87 @@ describe "InludesHelper" do
     end
 
     it "has the options parsing script" do
-      jq_ui_date_select_includes.should include('<script type="text/javascript">$(document).ready(function(){$(".jq_ui_dp_ds").each(function(){var s=$(this).attr("data-jqdatepicker");$(this).attr("data-jqdatepicker")?$(this).datepicker(JSON.parse(s)):$(this).datepicker()})});</script>')
+      jq_ui_date_select_includes.should include('$(document).ready(function(){$(".jq_ui_dp_ds").each(function(){var s=$(this).attr("data-jqdatepicker");$(this).attr("data-jqdatepicker")?$(this).datepicker(JSON.parse(s)):$(this).datepicker()})});</script>')
+    end
+
+    it "has the setDefaults javascript function" do
+      jq_ui_date_select_includes.should include("<script type=\"text/javascript\">$.datepicker.setDefaults({")
+    end
+
+    describe "without datepicker_options" do
+
+      it "has changeMonth set to true" do
+        jq_ui_date_select_includes.should include('"changeMonth":true')
+      end
+
+      it "has changeYear set to true" do
+        jq_ui_date_select_includes.should include('"changeYear":true')
+      end
+
+      it "has showOtherMonths set to true" do
+        jq_ui_date_select_includes.should include('"showOtherMonths":true')
+      end
+
+      it "has selectOtherMonths set to true" do
+        jq_ui_date_select_includes.should include('"selectOtherMonths":true')
+      end
+
+    end
+
+    describe "with datepicker_options" do
+      
+      describe "of {:datepicker_options => {:autoSize => true}}" do
+
+        it "has changeMonth set to true" do
+          jq_ui_date_select_includes(:datepicker_options => {:autoSize => true}).should include('"changeMonth":true')
+        end
+
+        it "has changeYear set to true" do
+          jq_ui_date_select_includes(:datepicker_options => {:autoSize => true}).should include('"changeYear":true')
+        end
+
+        it "has showOtherMonths set to true" do
+          jq_ui_date_select_includes(:datepicker_options => {:autoSize => true}).should include('"showOtherMonths":true')
+        end
+
+        it "has selectOtherMonths set to true" do
+          jq_ui_date_select_includes(:datepicker_options => {:autoSize => true}).should include('"selectOtherMonths":true')
+        end
+
+        it "has autoSize set to true" do
+          jq_ui_date_select_includes(:datepicker_options => {:autoSize => true}).should include('"autoSize":true')
+        end
+
+      end
+
+      describe "overwriting the defaults" do
+
+        before(:each) do
+          @options = {:datepicker_options => {:changeMonth => false,
+                                              :changeYear => false, 
+                                              :showOtherMonths => false, 
+                                              :selectOtherMonths => false}}
+        end
+
+        it "has changeMonth set to false" do
+          puts @options.inspect
+          jq_ui_date_select_includes(@options).should include('"changeMonth":false')
+        end
+
+        it "has changeYear set to false" do
+          jq_ui_date_select_includes(@options).should include('"changeYear":false')
+        end
+
+        it "has showOtherMonths set to false" do
+          jq_ui_date_select_includes(@options).should include('"showOtherMonths":false')
+        end
+
+        it "has selectOtherMonths set to false" do
+          jq_ui_date_select_includes(@options).should include('"selectOtherMonths":false')
+        end
+
+      end
+
     end
 
     describe "with no args" do
