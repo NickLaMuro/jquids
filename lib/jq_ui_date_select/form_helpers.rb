@@ -2,7 +2,7 @@ module JqUiDateSelect
   module FormHelpers
 
     def jq_ui_date_select_tag(name, value=nil, options = {})
-      options[:class] ? options[:class] += " jq_ui_dp" : options[:class] = "jq_ui_dp"
+      options[:class] ? options[:class] += " jq_ui_dp_ds" : options[:class] = "jq_ui_dp_ds"
 
       #if options[:datepicker_options].nil? and options[:datepicker_options].respond_to?(:
       options["data-jqdatepicker"] = JSON.unparse(options.delete(:datepicker_options)) unless options[:datepicker_options].nil?

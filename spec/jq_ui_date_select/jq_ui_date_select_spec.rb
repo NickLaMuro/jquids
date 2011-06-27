@@ -1,6 +1,10 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
-describe "CalendarDateSelect" do
+describe JqUiDateSelect do
+
+  before(:each) do
+    JqUiDateSelect.instance_variable_set :@jq_ui_date_select_format, nil
+  end
 
   describe "The format function where:" do
     
@@ -22,7 +26,7 @@ describe "CalendarDateSelect" do
 
       end
 
-      FORMATS.each do |format|
+      JqUiDateSelect::FORMATS.each do |format|
 
         describe "to '#{format[0]}'" do
 
@@ -221,10 +225,6 @@ describe "CalendarDateSelect" do
 
     end
 
-  end
-
-  after(:each) do
-    JqUiDateSelect.instance_variable_set :@jq_ui_date_select_format, nil
   end
 
 end

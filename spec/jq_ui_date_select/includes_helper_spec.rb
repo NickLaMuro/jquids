@@ -1,11 +1,15 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 require 'open-uri'
 
-describe "InludesHelper" do
+describe JqUiDateSelect::IncludesHelper do
 
   include ActionView::Helpers::TagHelper
   include ActionView::Helpers::AssetTagHelper
   include JqUiDateSelect::IncludesHelper
+
+  before(:each) do
+    JqUiDateSelect.instance_variable_set :@jq_ui_date_select_format, nil
+  end
 
   describe "The jq_ui_default_stylesheet function" do
 
@@ -25,7 +29,7 @@ describe "InludesHelper" do
 
     end
 
-    STYLES.each do |style|
+    JqUiDateSelect::STYLES.each do |style|
 
       describe "with args of #{style[0]}" do
 
@@ -104,6 +108,38 @@ describe "InludesHelper" do
         jq_ui_date_select_includes.should include('"selectOtherMonths":true')
       end
 
+      it "has dateFormat set to ':natural'" do
+        jq_ui_date_select_includes.should include('"dateFormat":"MM dd, yy"')
+      end
+
+    end
+
+    describe "without datepicker_options and the format is set to finnish" do
+
+      before(:each) do
+        JqUiDateSelect.format = :finnish
+      end
+
+      it "has changeMonth set to true" do
+        jq_ui_date_select_includes.should include('"changeMonth":true')
+      end
+
+      it "has changeYear set to true" do
+        jq_ui_date_select_includes.should include('"changeYear":true')
+      end
+
+      it "has showOtherMonths set to true" do
+        jq_ui_date_select_includes.should include('"showOtherMonths":true')
+      end
+
+      it "has selectOtherMonths set to true" do
+        jq_ui_date_select_includes.should include('"selectOtherMonths":true')
+      end
+
+      it "has dateFormat set to ':finnish'" do
+        jq_ui_date_select_includes.should include('"dateFormat":"dd.mm.yy"')
+      end
+
     end
 
     describe "with datepicker_options" do
@@ -128,6 +164,10 @@ describe "InludesHelper" do
 
         it "has autoSize set to true" do
           jq_ui_date_select_includes(:datepicker_options => {:autoSize => true}).should include('"autoSize":true')
+        end
+
+        it "has dateFormat set to ':natural'" do
+          jq_ui_date_select_includes(:datepicker_options => {:autoSize => true}).should include('"dateFormat":"MM dd, yy"')
         end
 
       end
@@ -156,6 +196,10 @@ describe "InludesHelper" do
 
         it "has selectOtherMonths set to false" do
           jq_ui_date_select_includes(@options).should include('"selectOtherMonths":false')
+        end
+
+        it "has dateFormat set to ':natural'" do
+          jq_ui_date_select_includes(@options).should include('"dateFormat":"MM dd, yy"')
         end
 
       end
@@ -194,7 +238,7 @@ describe "InludesHelper" do
 
     end
 
-    STYLES.each do |style|
+    JqUiDateSelect::STYLES.each do |style|
 
       describe "with args of {:style => #{style[0]}}" do
 

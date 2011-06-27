@@ -4,8 +4,8 @@ module JqUiDateSelect
     require File.dirname(__FILE__) + "/constants/styles.rb"
 
     def jq_ui_stylesheet(style = :base)
-      raise JqUiDateSelect::NotAKnownStyle, "JqUiDateSelect: Unrecognized style specification: #{style}" unless STYLES.has_key?(style)
-      "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/themes/#{STYLES[style]}/jquery-ui.css"
+      raise JqUiDateSelect::NotAKnownStyle, "JqUiDateSelect: Unrecognized style specification: #{style}" unless JqUiDateSelect::STYLES.has_key?(style)
+      "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/themes/#{JqUiDateSelect::STYLES[style]}/jquery-ui.css"
     end
 
     def jq_ui_javascripts
@@ -28,7 +28,7 @@ module JqUiDateSelect
       html = ""
 
       if options.has_key?(:style)
-          html <<  stylesheet_link_tag(jq_ui_stylesheet(options[:style])) + "\n" unless options[:style] == nil or options[:style] == :none or options[:style] == false
+        html <<  stylesheet_link_tag(jq_ui_stylesheet(options[:style])) + "\n" unless options[:style] == nil or options[:style] == :none or options[:style] == false
       else
         html << stylesheet_link_tag(jq_ui_stylesheet) + "\n"
       end
@@ -44,6 +44,7 @@ module JqUiDateSelect
       options[:datepicker_options][:selectOtherMonths] = true if options[:datepicker_options][:selectOtherMonths].nil?
       options[:datepicker_options][:changeMonth] = true if options[:datepicker_options][:changeMonth].nil?
       options[:datepicker_options][:changeYear] = true if options[:datepicker_options][:changeYear].nil?
+      options[:datepicker_options][:dateFormat] = JqUiDateSelect.format[:js_date]
 
 
       datepicker_options = options[:datepicker_options].respond_to?(:to_json) ? options[:datepicker_options].to_json : JSON.unparse(options[:datepicker_options])
