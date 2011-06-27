@@ -142,6 +142,34 @@ describe JqUiDateSelect::IncludesHelper do
 
     end
 
+    describe "without datepicker_options and the format is set to finnish using the function itself" do
+
+      before(:each) do
+        @output = jq_ui_date_select_includes(:format => :finnish) 
+      end
+
+      it "has changeMonth set to true" do
+        @output.should include('"changeMonth":true')
+      end
+
+      it "has changeYear set to true" do
+        @output.should include('"changeYear":true')
+      end
+
+      it "has showOtherMonths set to true" do
+        @output.should include('"showOtherMonths":true')
+      end
+
+      it "has selectOtherMonths set to true" do
+        @output.should include('"selectOtherMonths":true')
+      end
+
+      it "has dateFormat set to ':finnish'" do
+        @output.should include('"dateFormat":"dd.mm.yy"')
+      end
+
+    end
+
     describe "with datepicker_options" do
       
       describe "of {:datepicker_options => {:autoSize => true}}" do

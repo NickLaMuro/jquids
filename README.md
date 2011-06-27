@@ -17,11 +17,11 @@ Usage
 Add the following some where in your page (preferablly in the head of your
 layout file):
 
-  <%= jq_ui_date_select_includes %>
+    <%= jq_ui_date_select_includes %>
 
 Change a field to so it uses the `jq_ui_date_select_tag`:
 
-  <%= jq_ui_date_select_tag "some_date" %>
+    <%= jq_ui_date_select_tag "some_date" %>
 
 and you should be good to go!
 
@@ -40,7 +40,7 @@ public folder.
 To change the style, just add `:style => :new_style` to the
 `jq_ui_date_select_includes` declaration:
 
-  <%= jq_ui_date_select_includes :style => :vader %>
+    <%= jq_ui_date_select_includes :style => :vader %>
 
 And the new style will be applied.  All styles come from the Google CDN
 (http://code.google.com/apis/libraries/devguide.html), so they are not hosted
@@ -58,12 +58,12 @@ To set the format the same way that was done with CalendarDateSelect, just set
 the JqUiDateSelect format variable using the `format=` function somewhere in
 your code:
 
-  <% JqUiDateSelect.format= :american %>
+    <% JqUiDateSelect.format= :american %>
 
 or you can set it in `jq_ui_date_select_includes` method by setting the
 `:format` variable in the options hash:
 
-  <%= jq_ui_date_select_includes :format => :american %>
+    <%= jq_ui_date_select_includes :format => :american %>
 
 All the formats used mimic what was used in the original CalendarDateSelect
 gem.  The formats available are listed below.
@@ -76,14 +76,14 @@ JqUiDateSelect via the `:datepicker_options` hash.  To add an option to a
 single datepicker element, simply add the hash as an argument to
 `jq_ui_date_select_tag` call:
 
-  <%= jq_ui_date_select_tag "some_date", nil, :datepicker_options => {:showButtonPanel => true} %>
+    <%= jq_ui_date_select_tag "some_date", nil, :datepicker_options => {:showButtonPanel => true} %>
 
 and now the datepicker will use the jQueryUI's button panel at the bottom of
 the datepicker for that instance.  But if you have multiple instances that all
 should have the `showButtonPanel` equal to true, add the `:datepicker_options`
 to the `jq_ui_date_select_includes`:
 
-  <%= jq_ui_date_select_includes :datepicker_options => {:showButtonPanel => true} %>
+    <%= jq_ui_date_select_includes :datepicker_options => {:showButtonPanel => true} %>
 
 and the change will be applied to all instances of the datepicker.  You can
 overide that change by setting the setting to false on the desired
@@ -95,6 +95,9 @@ http://jqueryui.com/demos/datepicker/#options
 
 Styles
 ------
+
+The default style is `:base`.  The following can be implemented via the
+`jq_ui_date_select_includes` function:
 
 * `:base`
 * `:black_tie`
@@ -126,6 +129,8 @@ Styles
 Formats
 -------
 
+The default format is `:natural`.  Other formats include:
+
 * `:natural` = "%B %d, %Y"
 * `:hyphen_ampm` = "%Y-%m-%d"
 * `:iso_date` = "%Y-%m-%d"
@@ -137,8 +142,12 @@ Formats
 * `:italian` = "%d/%m/%Y"
 * `:db` = "%Y-%m-%d"
 
-Currently time is not implemented, but the only two formats currently with time
+The only two formats currently with time
 in am-pm is `:natural`, `:hyphen_ampm`, and `:american`.
+
+**NOTE:** Currently time is NOT implemented into the datepicker because jQuery
+does not support time with it's date picker.  A fix for that will come in the
+future.
 
 
 TODO
@@ -146,7 +155,6 @@ TODO
 
 - Allow for the choice to use different versions of jQuery and jQuery UI, or
   not include them all together
-- Allow for the setting of Global options.
 - Allow for setting the format via the `jq_ui_date_select_includes` method and
   the ability to set it on a case by case basis
 - Map the option settings for CalendarDateSelect to JqUiDateSelect

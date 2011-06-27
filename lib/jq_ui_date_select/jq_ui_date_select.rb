@@ -6,15 +6,15 @@ module JqUiDateSelect
   #   If a format doesn't exist, and error is through
   #   Else the format variable is set
   def self.format=(key)
-    raise JqUiDateSelect::NotAKnownFormat, "JqUiDateSelect: Unrecognized format specification: #{key}" unless FORMATS.has_key?(key)
-    @jq_ui_date_select_format = FORMATS[key]
+    raise JqUiDateSelect::NotAKnownFormat, "JqUiDateSelect: Unrecognized format specification: #{key}" unless JqUiDateSelect::FORMATS.has_key?(key)
+    @jq_ui_date_select_format = JqUiDateSelect::FORMATS[key]
   end
 
   # Gets the format variable
   #   If a format is set, it grabs it
   #   Else it will set it to the default format (:natural)
   def self.format
-    @jq_ui_date_select_format ||= FORMATS[:natural]
+    @jq_ui_date_select_format ||= JqUiDateSelect::FORMATS[:natural]
   end
 
   # Gets a format string based off of the current format

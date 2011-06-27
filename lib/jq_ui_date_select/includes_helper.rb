@@ -25,6 +25,9 @@ module JqUiDateSelect
     # To not include the style sheet into the layout, just pass :style => :none
     # (false or nil will also work)
     def jq_ui_date_select_includes(options = {})
+
+      # Set the format for the datepickers
+      JqUiDateSelect.format = options[:format] if options.has_key?(:format)
       html = ""
 
       if options.has_key?(:style)
