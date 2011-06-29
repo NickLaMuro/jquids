@@ -83,7 +83,7 @@ describe JqUiDateSelect::IncludesHelper do
     end
 
     it "has the options parsing script" do
-      jq_ui_date_select_includes.should include('$(document).ready(function(){$(".jq_ui_dp_ds").each(function(){var s=$(this).attr("data-jqdatepicker");$(this).attr("data-jqdatepicker")?$(this).datepicker(JSON.parse(s)):$(this).datepicker()})});</script>')
+      jq_ui_date_select_includes.should include('$(document).ready(function(){$(".jq_ui_ds_dp").each(function(){var s=$(this).attr("data-jqdatepicker");$(this).attr("data-jqdatepicker")?$(this).datepicker(JSON.parse(s)):$(this).datepicker()})});</script>')
     end
 
     it "has the setDefaults javascript function" do
@@ -210,7 +210,6 @@ describe JqUiDateSelect::IncludesHelper do
         end
 
         it "has changeMonth set to false" do
-          puts @options.inspect
           jq_ui_date_select_includes(@options).should include('"changeMonth":false')
         end
 
@@ -228,6 +227,38 @@ describe JqUiDateSelect::IncludesHelper do
 
         it "has dateFormat set to ':natural'" do
           jq_ui_date_select_includes(@options).should include('"dateFormat":"MM dd, yy"')
+        end
+
+      end
+
+    end
+
+    describe "with CalendarDateSelect style options" do
+      
+      describe "of :year_range => 2000..2020" do
+
+        it "has changeMonth set to true" do
+          jq_ui_date_select_includes(:year_range => 2000..2020).should include('"changeMonth":true')
+        end
+
+        it "has changeYear set to true" do
+          jq_ui_date_select_includes(:year_range => 2000..2020).should include('"changeYear":true')
+        end
+
+        it "has showOtherMonths set to true" do
+          jq_ui_date_select_includes(:year_range => 2000..2020).should include('"showOtherMonths":true')
+        end
+
+        it "has selectOtherMonths set to true" do
+          jq_ui_date_select_includes(:year_range => 2000..2020).should include('"selectOtherMonths":true')
+        end
+
+        it "has autoSize set to true" do
+          jq_ui_date_select_includes(:year_range => 2000..2020).should include('"yearRange":"2000:2020"')
+        end
+
+        it "has dateFormat set to ':natural'" do
+          jq_ui_date_select_includes(:year_range => 2000..2020).should include('"dateFormat":"MM dd, yy"')
         end
 
       end

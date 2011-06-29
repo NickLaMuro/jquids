@@ -163,7 +163,7 @@ describe JqUiDateSelect do
 
       end
 
-      describe "for '01/01/2001 11:00 PM'" do
+      describe "for a time of 01/01/2001 11:00 PM" do
 
         it "should return '01/01/2001 11:00 PM'" do
           JqUiDateSelect.format_date(DateTime.parse('01/01/2001 11:00 PM')).should == "01/01/2001 11:00 PM"
@@ -221,6 +221,89 @@ describe JqUiDateSelect do
 
       it "should return 'January 01, 2001'" do
         JqUiDateSelect.format_time('01/01/2001 11:00 AM'.to_time, {:time => false}).should == 'January 01, 2001'
+      end
+
+    end
+
+  end
+
+  describe "The 'jq_ui_date_select_process_options' function" do
+    
+    describe "with :year_range" do
+      
+      describe "equals 2000..2020" do
+
+        it "returns :datepicker_options => {:yearRange => '2000:2020'}" do
+          JqUiDateSelect.jq_ui_date_select_process_options({:year_range => 2000..2020}).should == {:datepicker_options => {:yearRange => '2000:2020'}}
+        end
+
+      end
+
+      describe "equals [2000..2020]" do
+
+        it "returns :datepicker_options => {:yearRange => '2000:2020'}" do
+          JqUiDateSelect.jq_ui_date_select_process_options({:year_range => [2000, 2020]}).should == {:datepicker_options => {:yearRange => '2000:2020'}}
+        end
+
+      end
+
+      describe "equals 2.years.ago..2.years.from_now" do
+
+        it "returns :datepicker_options => {:yearRange => '#{2.years.ago.strftime("%Y")}:#{2.years.from_now.strftime("%Y")}'}" do
+          output = JqUiDateSelect.jq_ui_date_select_process_options({:year_range => 2.years.ago..2.years.from_now})
+          output.should == {:datepicker_options => {:yearRange => "#{2.years.ago.strftime("%Y")}:#{2.years.from_now.strftime("%Y")}"}}
+        end
+
+      end
+
+      describe "equals [2.years.ago, 2.years.from_now]" do
+
+        it "returns :datepicker_options => {:yearRange => '#{2.years.ago.strftime("%Y")}:#{2.years.from_now.strftime("%Y")}'}" do
+          output = JqUiDateSelect.jq_ui_date_select_process_options({:year_range => [2.years.ago, 2.years.from_now]})
+          output.should == {:datepicker_options => {:yearRange => "#{2.years.ago.strftime("%Y")}:#{2.years.from_now.strftime("%Y")}"}}
+        end
+
+      end
+
+      describe "equals 2.years.ago" do
+
+        it "returns :datepicker_options => {:yearRange => '#{2.years.ago.strftime("%Y")}:#{2.year.ago.strftime("%Y")}'}" do
+          output = JqUiDateSelect.jq_ui_date_select_process_options({:year_range => 2.years.ago})
+          output.should == {:datepicker_options => {:yearRange => "#{2.years.ago.strftime("%Y")}:#{2.years.ago.strftime("%Y")}"}}
+        end
+
+      end
+
+    end
+
+    describe "with :month_year" do
+
+      describe "equals 'pancakes'" do
+
+        it "returns {}" do
+          output = JqUiDateSelect.jq_ui_date_select_process_options(:month_year => "pancakes")
+          #puts output
+          output.should == {}
+        end
+
+      end
+
+      describe "equals 'dropdowns'" do
+
+        it "returns :datepicker_options => {:changeMonth => true, :changeYear => true}" do
+          output = JqUiDateSelect.jq_ui_date_select_process_options({:month_year => "dropdowns"})
+          output.should == {:datepicker_options => {:changeMonth => true, :changeYear => true}}
+        end
+
+      end
+
+      describe "equals 'labels'" do
+
+        it "returns :datepicker_options => {:changeMonth => true, :changeYear => true}" do
+          output = JqUiDateSelect.jq_ui_date_select_process_options({:month_year => "labels"})
+          output.should == {:datepicker_options => {:changeMonth => false, :changeYear => false}}
+        end
+
       end
 
     end

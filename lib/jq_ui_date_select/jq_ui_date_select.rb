@@ -57,4 +57,32 @@ module JqUiDateSelect
 
   end
 
+  def self.jq_ui_date_select_process_options(options = {})
+    options[:datepicker_options] ||= {}
+
+    if options.has_key?(:year_range)
+      if options[:year_range].respond_to?(:first)
+        options[:datepicker_options][:yearRange] = options[:year_range].first.respond_to?(:strftime) ? 
+          "#{options[:year_range].first.strftime("%Y")}:#{options[:year_range].last.strftime("%Y")}" : "#{options[:year_range].first}:#{options[:year_range].last}"
+      else
+        options[:datepicker_options][:yearRange] = options[:year_range].respond_to?(:strftime) ? 
+          "#{options[:year_range].strftime("%Y")}:#{options[:year_range].strftime("%Y")}" : "#{options[:year_range]}:#{options[:year_range]}"
+      end
+      options.delete(:year_range)
+    end
+
+    if options[:month_year] == "dropdowns"
+      options[:datepicker_options][:changeMonth] = true
+      options[:datepicker_options][:changeYear] = true
+    elsif options[:month_year] == "labels"
+      options[:datepicker_options][:changeMonth] = false
+      options[:datepicker_options][:changeYear] = false
+    end
+    options.delete(:month_year)
+
+    # For slightly trimming unneeded html, and for less client side processing
+    options.delete(:datepicker_options) if options[:datepicker_options].keys.count <= 0
+    options
+  end
+
 end

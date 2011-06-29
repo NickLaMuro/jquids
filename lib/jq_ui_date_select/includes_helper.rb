@@ -49,7 +49,7 @@ module JqUiDateSelect
       options[:datepicker_options][:changeYear] = true if options[:datepicker_options][:changeYear].nil?
       options[:datepicker_options][:dateFormat] = JqUiDateSelect.format[:js_date]
 
-
+      JqUiDateSelect.jq_ui_date_select_process_options(options)
       datepicker_options = options[:datepicker_options].respond_to?(:to_json) ? options[:datepicker_options].to_json : JSON.unparse(options[:datepicker_options])
 
       html << '<script type="text/javascript">$.datepicker.setDefaults(' + datepicker_options + ');'
@@ -57,7 +57,7 @@ module JqUiDateSelect
       # A minified version of this javascript.
       #   <script type="text/javascript">
       #     $(document).ready(function(){
-      #        $(".jq_ui_dp_ds").each(function(){
+      #        $(".jq_ui_ds_dp").each(function(){
       #          var s = $(this).attr("data-jqdatepicker");
       #          $(this).attr("data-jqdatepicker") ? $(this).datepicker(JSON.parse(s)) : $(this).datepicker();
       #        });
@@ -65,7 +65,7 @@ module JqUiDateSelect
       #   </script>
       #
       # Used to parse out options for each datepicker instance
-      html << '$(document).ready(function(){$(".jq_ui_dp_ds").each(function(){var s=$(this).attr("data-jqdatepicker");$(this).attr("data-jqdatepicker")?$(this).datepicker(JSON.parse(s)):$(this).datepicker()})});</script>'
+      html << '$(document).ready(function(){$(".jq_ui_ds_dp").each(function(){var s=$(this).attr("data-jqdatepicker");$(this).attr("data-jqdatepicker")?$(this).datepicker(JSON.parse(s)):$(this).datepicker()})});</script>'
     end
 
   end
