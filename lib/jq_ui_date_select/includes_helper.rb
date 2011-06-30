@@ -28,15 +28,15 @@ module JqUiDateSelect
 
       # Set the format for the datepickers
       JqUiDateSelect.format = options[:format] if options.has_key?(:format)
-      html = ""
+      html_out = ""
 
       if options.has_key?(:style)
-        html <<  stylesheet_link_tag(jq_ui_stylesheet(options[:style])) + "\n" unless options[:style] == nil or options[:style] == :none or options[:style] == false
+        html_out <<  stylesheet_link_tag(jq_ui_stylesheet(options[:style])) + "\n" unless options[:style] == nil or options[:style] == :none or options[:style] == false
       else
-        html << stylesheet_link_tag(jq_ui_stylesheet) + "\n"
+        html_out << stylesheet_link_tag(jq_ui_stylesheet) + "\n"
       end
 
-      html << javascript_include_tag(jq_ui_javascripts) + "\n"
+      html_out << javascript_include_tag(jq_ui_javascripts) + "\n"
 
       options[:datepicker_options] ||= {}
       
@@ -50,9 +50,21 @@ module JqUiDateSelect
       options[:datepicker_options][:dateFormat] = JqUiDateSelect.format[:js_date]
 
       JqUiDateSelect.jq_ui_date_select_process_options(options)
-      datepicker_options = options[:datepicker_options].respond_to?(:to_json) ? options[:datepicker_options].to_json : JSON.unparse(options[:datepicker_options])
 
-      html << '<script type="text/javascript">$.datepicker.setDefaults(' + datepicker_options + ');'
+      # Decides whether the 'to_json' method exists (part of rails 3) or if the
+      # gem needs to us the json gem
+      datepicker_options = 
+        if options[:datepicker_options].respond_to?(:to_json)
+            options.delete(:datepicker_options).to_json
+        else
+          begin
+            JSON.unparse(options.delete(:datepicker_options))
+          rescue
+            ""
+          end
+        end
+
+      html_out << '<script type="text/javascript">$.datepicker.setDefaults(' + datepicker_options + ');'
 
       # A minified version of this javascript.
       #   <script type="text/javascript">
@@ -65,7 +77,13 @@ module JqUiDateSelect
       #   </script>
       #
       # Used to parse out options for each datepicker instance
-      html << '$(document).ready(function(){$(".jq_ui_ds_dp").each(function(){var s=$(this).attr("data-jqdatepicker");$(this).attr("data-jqdatepicker")?$(this).datepicker(JSON.parse(s)):$(this).datepicker()})});</script>'
+      html_out << '$(document).ready(function(){$(".jq_ui_ds_dp").each(function(){var s=$(this).attr("data-jqdatepicker");$(this).attr("data-jqdatepicker")?$(this).datepicker(JSON.parse(s)):$(this).datepicker()})});</script>'
+
+      if html_out.respond_to?(:html_safe)
+        return html_out.html_safe
+      else
+        return html_out
+      end
     end
 
   end

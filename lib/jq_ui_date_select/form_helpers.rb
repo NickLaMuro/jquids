@@ -5,8 +5,18 @@ module JqUiDateSelect
       options[:class] ? options[:class] += " jq_ui_ds_dp" : options[:class] = "jq_ui_ds_dp"
       JqUiDateSelect.jq_ui_date_select_process_options(options)
 
-      #if options[:datepicker_options].nil? and options[:datepicker_options].respond_to?(:
-      options["data-jqdatepicker"] = JSON.unparse(options.delete(:datepicker_options)) unless options[:datepicker_options].nil?
+      unless options[:datepicker_options].nil?
+        options["data-jqdatepicker"] = 
+          if options[:datepicker_options].respond_to?(:to_json)
+            options.delete(:datepicker_options).to_json 
+          else
+            begin
+              JSON.unparse(options.delete(:datepicker_options))
+            rescue
+              ""
+            end
+          end
+      end
 
       value = JqUiDateSelect.format_time(value)
       text_field_tag(name, value, options)
@@ -17,7 +27,18 @@ module JqUiDateSelect
       options[:class] ? options[:class] += " jq_ui_ds_dp" : options[:class] = "jq_ui_ds_dp"
       JqUiDateSelect.jq_ui_date_select_process_options(options)
 
-      options["data-jqdatepicker"] = JSON.unparse(options.delete(:datepicker_options)) unless options[:datepicker_options].nil?
+      unless options[:datepicker_options].nil?
+        options["data-jqdatepicker"] =
+          if options[:datepicker_options].respond_to?(:to_json)
+            options.delete(:datepicker_options).to_json
+          else
+            begin
+              JSON.unparse(options.delete(:datepicker_options))
+            rescue
+              ""
+            end
+          end
+      end
 
       options[:value] ||=
         begin
