@@ -80,6 +80,12 @@ module JqUiDateSelect
     end
     options.delete(:month_year)
 
+    #if options.has_key?(:image)
+      #options[:datepicker_options][:buttonImageOnly] = true
+      #options[:datepicker_options][:buttonImage] = image_path(options[:image])
+      #options.delete(:image)
+    #end
+
     # For slightly trimming unneeded html, and for less client side processing
     options.delete(:datepicker_options) if options[:datepicker_options].keys.count <= 0
     options

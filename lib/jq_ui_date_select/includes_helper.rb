@@ -2,16 +2,24 @@ module JqUiDateSelect
   module IncludesHelper
 
     require File.dirname(__FILE__) + "/constants/styles.rb"
+    require File.dirname(__FILE__) + "/constants/jq_versions.rb"
+    require File.dirname(__FILE__) + "/constants/ui_versions.rb"
 
     def jq_ui_stylesheet(style = :base)
       raise JqUiDateSelect::NotAKnownStyle, "JqUiDateSelect: Unrecognized style specification: #{style}" unless JqUiDateSelect::STYLES.has_key?(style)
-      "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/themes/#{JqUiDateSelect::STYLES[style]}/jquery-ui.css"
+      "https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/themes/#{JqUiDateSelect::STYLES[style]}/jquery-ui.css"
     end
 
-    def jq_ui_javascripts
+    def jq_ui_javascripts(jq, ui)
       includes = []
-      includes << "https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"
-      includes << "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/jquery-ui.min.js"
+      unless jq == :none or jq == nil or jq == false
+        jq = JqUiDateSelect::JQVersions.member?(jq) ? jq : JqUiDateSelect::JQVersions.last
+        includes << "https://ajax.googleapis.com/ajax/libs/jquery/#{jq}/jquery.min.js" 
+      end
+      unless ui == :none or ui == nil or ui == false
+        ui = JqUiDateSelect::UIVersions.member?(ui) ? ui : JqUiDateSelect::UIVersions.last
+        includes << "https://ajax.googleapis.com/ajax/libs/jqueryui/#{ui}/jquery-ui.min.js" 
+      end
       includes
     end
 
@@ -36,7 +44,9 @@ module JqUiDateSelect
         html_out << stylesheet_link_tag(jq_ui_stylesheet) + "\n"
       end
 
-      html_out << javascript_include_tag(jq_ui_javascripts) + "\n"
+      jq_vrs = options.has_key?(:jQuery) ? options[:jQuery] : JqUiDateSelect::JQVersions.last
+      ui_vrs = options.has_key?(:jQueryUI) ? options[:jQueryUI] : JqUiDateSelect::UIVersions.last
+      html_out << javascript_include_tag(jq_ui_javascripts(jq_vrs, ui_vrs)) + "\n"
 
       options[:datepicker_options] ||= {}
       

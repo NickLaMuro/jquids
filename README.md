@@ -35,6 +35,42 @@ out all of the weight of an full library of javascript and css files in your
 public folder.
 
 
+### jQeury Version
+
+To specify a different version of jQuery, just include :jQuery => "X.X.X" to
+your 'jq_ui_date_select_includes' method:
+
+    <%= jq_ui_date_select_includes :jQuery => "1.6.0" %>
+
+A list of supported versions numbers can be found at the bottom of the page.
+
+Because it is entirely possible that you are already using jQuery in your
+application, the option is given to you to not include jQuery using
+JqUiDateSelect.  To do that, just add :jQuery => :none to your
+'jq_ui_date_select_includes' method:
+
+    <%= jq_ui_date_select_includes :jQuery => :none %>
+
+and now jQuery will not be included into your plugin.
+
+
+### jQuery UI Version
+
+Just like you can specify a specific version of jQuery, you can also specify a
+version of jQuery UI that you would prefer to use:
+
+    <%= jq_ui_date_select_includes :jQueryUI => "1.8.0" %>
+
+A list of supported version numbers can be found at the bottom of the page.
+
+You are also able tell the JqUiDateSelect not to load jQuery UI in the same way
+that you did with jQuery:
+
+    <%= jq_ui_date_select_includes :jQueryUI => :none %>
+
+You may also use `nil` or `false`.
+
+
 ### Custom Style
 
 To change the style, just add `:style => :new_style` to the
@@ -91,6 +127,18 @@ overide that change by setting the setting to false on the desired
 
 A full list of all of the jQueryUI functions can be found here:
 http://jqueryui.com/demos/datepicker/#options
+
+
+jQuery Versions
+---------------
+"1.2.3, 1.2.6, 1.3.0, 1.3.1, 1.3.2, 1.4.0, 1.4.1, 1.4.2, 1.4.3, 1.4.4, 1.5.0,
+1.5.1, 1.5.2, 1.6.0, 1.6.1"
+
+
+jQuery UI Versions
+------------------
+"1.5.2, 1.5.3, 1.6.0, 1.7.0, 1.7.1, 1.7.2, 1.7.3, 1.8.0, 1.8.1, 1.8.2, 1.8.4,
+1.8.5, 1.8.6, 1.8.7, 1.8.8, 1.8.9, 1.8.10, 1.8.11, 1.8.12, 1.8.13"
 
 
 Styles

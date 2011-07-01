@@ -1,6 +1,8 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
 describe JqUiDateSelect do
+  include ActionView::Helpers::AssetTagHelper
+  include JqUiDateSelect
 
   before(:each) do
     JqUiDateSelect.instance_variable_set :@jq_ui_date_select_format, nil
@@ -307,6 +309,28 @@ describe JqUiDateSelect do
       end
 
     end
+
+    #describe "with :image" do
+
+      #describe "equals 'groovy.png'" do
+
+        #it "returns :datepicker_options => {:buttonImage => '/images/groovy.png', :buttonImageOnly => true}" do
+          #output = JqUiDateSelect.jq_ui_date_select_process_options({:image => 'groovy.png'})
+          #output.should == {:datepicker_options => {:buttonImage => '/images/groovy.png', :buttonImageOnly => true}}
+        #end
+
+      #end
+
+      #describe "equals 'http://www.google.com/images/MindControl.gif'" do
+
+        #it "reuturns :datepicker_options => {:buttonImage => 'http://www.google.com/images/MindControl.gif', :buttonImageOnly => true}" do
+          #output = JqUiDateSelect.jq_ui_date_select_process_options({:image => 'http://www.google.com/images/MindControl.gif'})
+          #output.should == {:datepicker_options => {:buttonImage => 'http://www.google.com/images/MindControl.gif', :buttonImageOnly => true}}
+        #end
+          
+      #end
+
+    #end
 
   end
 
