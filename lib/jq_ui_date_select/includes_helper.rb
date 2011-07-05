@@ -4,13 +4,14 @@ module JqUiDateSelect
     require File.dirname(__FILE__) + "/constants/styles.rb"
     require File.dirname(__FILE__) + "/constants/jq_versions.rb"
     require File.dirname(__FILE__) + "/constants/ui_versions.rb"
+    require File.dirname(__FILE__) + "/constants/timepicker_tags.rb"
 
     def jq_ui_stylesheet(style = :base)
       raise JqUiDateSelect::NotAKnownStyle, "JqUiDateSelect: Unrecognized style specification: #{style}" unless JqUiDateSelect::STYLES.has_key?(style)
       "https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/themes/#{JqUiDateSelect::STYLES[style]}/jquery-ui.css"
     end
 
-    def jq_ui_javascripts(jq, ui)
+    def jq_ui_javascripts(jq, ui, tp)
       includes = []
       unless jq == :none or jq == nil or jq == false
         jq = JqUiDateSelect::JQVersions.member?(jq) ? jq : JqUiDateSelect::JQVersions.last
@@ -19,6 +20,10 @@ module JqUiDateSelect
       unless ui == :none or ui == nil or ui == false
         ui = JqUiDateSelect::UIVersions.member?(ui) ? ui : JqUiDateSelect::UIVersions.last
         includes << "https://ajax.googleapis.com/ajax/libs/jqueryui/#{ui}/jquery-ui.min.js" 
+      end
+      unless tp == :none or tp == nil or tp == false
+        tp = JqUiDateSelect::TimepickerTags.member?(tp) ? tp : JqUiDateSelect::TimepickerTags.last
+        includes << "https://raw.github.com/trentrichardson/jQuery-Timepicker-Addon/#{tp}/jquery-ui-timepicker-addon.js"
       end
       includes
     end
@@ -46,7 +51,8 @@ module JqUiDateSelect
 
       jq_vrs = options.has_key?(:jQuery) ? options[:jQuery] : JqUiDateSelect::JQVersions.last
       ui_vrs = options.has_key?(:jQueryUI) ? options[:jQueryUI] : JqUiDateSelect::UIVersions.last
-      html_out << javascript_include_tag(jq_ui_javascripts(jq_vrs, ui_vrs)) + "\n"
+      trtp_vrs = options.has_key?(:TRTimepicker) ? options[:TRTimepicker] : :none
+      html_out << javascript_include_tag(jq_ui_javascripts(jq_vrs, ui_vrs, trtp_vrs)) + "\n"
 
       options[:datepicker_options] ||= {}
       

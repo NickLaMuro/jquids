@@ -89,6 +89,69 @@ describe JqUiDateSelect::FormHelpers do
 
       end
 
+      describe "with deadline assigned as a time" do
+
+        before(:each) do
+          @task.deadline = Time.parse("01/02/2001")
+        end
+        
+        it "returns and input with a class of 'jq_ui_ds_dp' for the 'deadline' field with a value formated to 'January 02, 2001'" do
+          output = jq_ui_date_select(:task, :deadline)
+          output.should == text_field(:task, :deadline, :class => "jq_ui_ds_dp", :value => "January 02, 2001")
+        end
+
+        describe "with a :time => true" do
+          
+        end
+
+        describe "with a format of :finnish" do
+
+          it "returns and input with a class of 'jq_ui_ds_dp' for the 'deadline' field with a value formated to '02.01.2001'" do
+            JqUiDateSelect.format=(:finnish)
+            output = jq_ui_date_select(:task, :deadline)
+            output.should == text_field(:task, :deadline, :class => "jq_ui_ds_dp", :value => "02.01.2001")
+          end
+
+        end
+
+        describe "with datepicker_options of '{:autoSize => true}'" do
+
+          it "returns and input with a class of 'jq_ui_ds_dp' for the 'deadline' field," + 
+          " a value formated to 'January 02, 2001'," +
+          " and a data-jqdatepicker value of '{\"autoSize\":true}'" do
+            output = jq_ui_date_select(:task, :deadline, :datepicker_options => {:autoSize => true})
+            output.should == text_field(:task, :deadline, :class => "jq_ui_ds_dp", :value => "January 02, 2001", "data-jqdatepicker" => '{"autoSize":true}' )
+          end
+
+        end
+
+        describe ":year_range set to [2000..2020]" do
+
+          it "returns and input with a class of 'jq_ui_ds_dp' for the 'deadline' field," + 
+          " a value formated to 'January 02, 2001'," +
+          " and a data-jqdatepicker value of '{\"yearRange\":\"2000:2020\"}'" do
+            output = jq_ui_date_select(:task, :deadline, :year_range => 2000..2020 )
+            output.should == text_field(:task, :deadline, :class => "jq_ui_ds_dp", :value => "January 02, 2001", "data-jqdatepicker" => '{"yearRange":"2000:2020"}' )
+          end
+
+        end
+
+        describe "with a differnt object passed in the options hash" do
+
+          before(:each) do
+            @task2 = OpenStruct.new
+            @task2.deadline = "01/03/2001".to_date
+          end
+
+          it "returns and input with a class of 'jq_ui_ds_dp' for the 'deadline' field with a value formated to 'January 02, 2001'" do
+            output = jq_ui_date_select(:task, :deadline, :object => @task2)
+            output.should == text_field(:task, :deadline, :class => "jq_ui_ds_dp", :value => "January 03, 2001")
+          end
+
+        end
+
+      end
+
     end
 
   end

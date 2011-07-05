@@ -58,12 +58,20 @@ describe JqUiDateSelect::IncludesHelper do
 
   describe "The jq_ui_javascripts function" do
 
-    describe "where :jq" do
+    describe "where jq" do
+
+      describe "equals latest version" do
+
+        it "does include 'https://ajax.googleapis.com/ajax/libs/jquery/'" do
+          jq_ui_javascripts(JqUiDateSelect::JQVersions.last, JqUiDateSelect::UIVersions.last, JqUiDateSelect::TimepickerTags.last).select {|x| x =~ /https:\/\/ajax.googleapis.com\/ajax\/libs\/jquery\//}.should_not == []
+        end
+
+      end
 
       describe "equals :none" do
 
         it "doesn't include 'https://ajax.googleapis.com/ajax/libs/jquery/'" do
-          jq_ui_javascripts(:none, JqUiDateSelect::UIVersions.last).select {|x| x =~ /https:\/\/ajax.googleapis.com\/ajax\/libs\/jquery\//}.should == []
+          jq_ui_javascripts(:none, JqUiDateSelect::UIVersions.last, JqUiDateSelect::TimepickerTags.last).select {|x| x =~ /https:\/\/ajax.googleapis.com\/ajax\/libs\/jquery\//}.should == []
         end
 
       end
@@ -71,7 +79,7 @@ describe JqUiDateSelect::IncludesHelper do
       describe "equals nil" do
 
         it "doesn't include 'https://ajax.googleapis.com/ajax/libs/jquery/'" do
-          jq_ui_javascripts(nil, JqUiDateSelect::UIVersions.last).select {|x| x =~ /https:\/\/ajax.googleapis.com\/ajax\/libs\/jquery\//}.should == []
+          jq_ui_javascripts(nil, JqUiDateSelect::UIVersions.last, JqUiDateSelect::TimepickerTags.last).select {|x| x =~ /https:\/\/ajax.googleapis.com\/ajax\/libs\/jquery\//}.should == []
         end
 
       end
@@ -79,7 +87,7 @@ describe JqUiDateSelect::IncludesHelper do
       describe "equals false" do
 
         it "doesn't include 'https://ajax.googleapis.com/ajax/libs/jquery/'" do
-          jq_ui_javascripts(false, JqUiDateSelect::UIVersions.last).select {|x| x =~ /https:\/\/ajax.googleapis.com\/ajax\/libs\/jquery\//}.should == []
+          jq_ui_javascripts(false, JqUiDateSelect::UIVersions.last, JqUiDateSelect::TimepickerTags.last).select {|x| x =~ /https:\/\/ajax.googleapis.com\/ajax\/libs\/jquery\//}.should == []
         end
 
       end
@@ -89,7 +97,7 @@ describe JqUiDateSelect::IncludesHelper do
         describe "equals '#{v}'" do
 
           it "includes 'https://ajax.googleapis.com/ajax/libs/jquery/#{v}/jquery.min.js'" do
-            jq_ui_javascripts(v, JqUiDateSelect::UIVersions.last).should include("https://ajax.googleapis.com/ajax/libs/jquery/#{v}/jquery.min.js")
+            jq_ui_javascripts(v, JqUiDateSelect::UIVersions.last, JqUiDateSelect::TimepickerTags.last).should include("https://ajax.googleapis.com/ajax/libs/jquery/#{v}/jquery.min.js")
           end
 
         end
@@ -99,19 +107,27 @@ describe JqUiDateSelect::IncludesHelper do
       describe "equals '9001'" do
 
         it "includes 'https://ajax.googleapis.com/ajax/libs/jquery/#{JqUiDateSelect::JQVersions.last}/jquery.min.js'" do
-          jq_ui_javascripts('9001', JqUiDateSelect::UIVersions.last).should include("https://ajax.googleapis.com/ajax/libs/jquery/#{JqUiDateSelect::JQVersions.last}/jquery.min.js")
+          jq_ui_javascripts('9001', JqUiDateSelect::UIVersions.last, JqUiDateSelect::TimepickerTags.last).should include("https://ajax.googleapis.com/ajax/libs/jquery/#{JqUiDateSelect::JQVersions.last}/jquery.min.js")
         end
 
       end
 
     end
 
-    describe "where :ui" do
+    describe "where ui" do
+
+      describe "equals :none" do
+
+        it "does include 'https://ajax.googleapis.com/ajax/libs/jqueryui/'" do
+          jq_ui_javascripts(JqUiDateSelect::JQVersions.last, JqUiDateSelect::UIVersions.last, JqUiDateSelect::TimepickerTags.last).select {|x| x =~ /https:\/\/ajax.googleapis.com\/ajax\/libs\/jqueryui\//}.should_not == []
+        end
+
+      end
 
       describe "equals :none" do
 
         it "doesn't include 'https://ajax.googleapis.com/ajax/libs/jqueryui/'" do
-          jq_ui_javascripts(JqUiDateSelect::JQVersions.last, :none).select {|x| x =~ /https:\/\/ajax.googleapis.com\/ajax\/libs\/jqueryui\//}.should == []
+          jq_ui_javascripts(JqUiDateSelect::JQVersions.last, :none, JqUiDateSelect::TimepickerTags.last).select {|x| x =~ /https:\/\/ajax.googleapis.com\/ajax\/libs\/jqueryui\//}.should == []
         end
 
       end
@@ -119,7 +135,7 @@ describe JqUiDateSelect::IncludesHelper do
       describe "equals nil" do
 
         it "doesn't include 'https://ajax.googleapis.com/ajax/libs/jqueryui/'" do
-          jq_ui_javascripts(JqUiDateSelect::JQVersions.last, nil).select {|x| x =~ /https:\/\/ajax.googleapis.com\/ajax\/libs\/jqueryui\//}.should == []
+          jq_ui_javascripts(JqUiDateSelect::JQVersions.last, nil, JqUiDateSelect::TimepickerTags.last).select {|x| x =~ /https:\/\/ajax.googleapis.com\/ajax\/libs\/jqueryui\//}.should == []
         end
 
       end
@@ -127,7 +143,7 @@ describe JqUiDateSelect::IncludesHelper do
       describe "equals false" do
 
         it "doesn't include 'https://ajax.googleapis.com/ajax/libs/jqueryui/'" do
-          jq_ui_javascripts(JqUiDateSelect::JQVersions.last, false).select {|x| x =~ /https:\/\/ajax.googleapis.com\/ajax\/libs\/jqueryui\//}.should == []
+          jq_ui_javascripts(JqUiDateSelect::JQVersions.last, false, JqUiDateSelect::TimepickerTags.last).select {|x| x =~ /https:\/\/ajax.googleapis.com\/ajax\/libs\/jqueryui\//}.should == []
         end
 
       end
@@ -136,7 +152,7 @@ describe JqUiDateSelect::IncludesHelper do
         describe "equals '#{v}'" do
 
           it "includes 'https://ajax.googleapis.com/ajax/libs/jqueryui/#{v}/jquery-ui.min.js'" do
-            jq_ui_javascripts(JqUiDateSelect::UIVersions.last, v).should include("https://ajax.googleapis.com/ajax/libs/jqueryui/#{v}/jquery-ui.min.js")
+            jq_ui_javascripts(JqUiDateSelect::UIVersions.last, v, JqUiDateSelect::TimepickerTags.last).should include("https://ajax.googleapis.com/ajax/libs/jqueryui/#{v}/jquery-ui.min.js")
           end
 
         end
@@ -146,11 +162,66 @@ describe JqUiDateSelect::IncludesHelper do
       describe "equals '9001'" do
 
         it "includes 'https://ajax.googleapis.com/ajax/libs/jqueryui/#{JqUiDateSelect::UIVersions.last}/jquery-ui.min.js'" do
-          jq_ui_javascripts(JqUiDateSelect::UIVersions.last, 9001).should include("https://ajax.googleapis.com/ajax/libs/jqueryui/#{JqUiDateSelect::UIVersions.last}/jquery-ui.min.js")
+          jq_ui_javascripts(JqUiDateSelect::UIVersions.last, 9001, JqUiDateSelect::TimepickerTags.last).should include("https://ajax.googleapis.com/ajax/libs/jqueryui/#{JqUiDateSelect::UIVersions.last}/jquery-ui.min.js")
         end
 
       end
 
+    end
+
+    describe "where timepicker" do
+
+      describe "equals the latest version" do
+
+        it "does includes 'https://raw.github.com/trentrichardson/jQuery-Timepicker-Addon/'" do
+          jq_ui_javascripts(JqUiDateSelect::UIVersions.last, JqUiDateSelect::UIVersions.last, JqUiDateSelect::TimepickerTags.last).select {|x| x =~ /https:\/\/raw.github.com\/trentrichardson\/jQuery-Timepicker-Addon\//}.should_not == [] 
+        end
+
+      end
+
+      describe "equals :none" do
+
+        it "doesn't includes 'https://raw.github.com/trentrichardson/jQuery-Timepicker-Addon/'" do
+          jq_ui_javascripts(JqUiDateSelect::UIVersions.last, JqUiDateSelect::UIVersions.last, :none).select {|x| x =~ /https:\/\/raw.github.com\/trentrichardson\/jQuery-Timepicker-Addon\//}.should == [] 
+        end
+
+      end
+
+      describe "equals false" do
+
+        it "doesn't includes 'https://raw.github.com/trentrichardson/jQuery-Timepicker-Addon/'" do
+          jq_ui_javascripts(JqUiDateSelect::UIVersions.last, JqUiDateSelect::UIVersions.last, false).select {|x| x =~ /https:\/\/raw.github.com\/trentrichardson\/jQuery-Timepicker-Addon\//}.should == [] 
+        end
+
+      end
+
+      describe "equals nil" do
+
+        it "doesn't includes 'https://raw.github.com/trentrichardson/jQuery-Timepicker-Addon/'" do
+          jq_ui_javascripts(JqUiDateSelect::UIVersions.last, JqUiDateSelect::UIVersions.last, nil).select {|x| x =~ /https:\/\/raw.github.com\/trentrichardson\/jQuery-Timepicker-Addon\//}.should == [] 
+        end
+
+      end
+
+      JqUiDateSelect::TimepickerTags.each do |v|
+        describe "equals '#{v}'" do
+
+          it "includes 'https://raw.github.com/trentrichardson/jQuery-Timepicker-Addon/#{v}/jquery-ui-timepicker-addon.js'" do
+            jq_ui_javascripts(JqUiDateSelect::UIVersions.last, JqUiDateSelect::UIVersions.last, v).should include("https://raw.github.com/trentrichardson/jQuery-Timepicker-Addon/#{v}/jquery-ui-timepicker-addon.js")
+          end
+
+        end
+
+      end
+
+      describe "equals '9001'" do
+
+        it "includes 'https://raw.github.com/trentrichardson/jQuery-Timepicker-Addon/#{JqUiDateSelect::TimepickerTags.last}/jquery-ui-timepicker-addon.js'" do
+          jq_ui_javascripts(JqUiDateSelect::UIVersions.last, JqUiDateSelect::UIVersions.last, 9001).should include("https://raw.github.com/trentrichardson/jQuery-Timepicker-Addon/#{JqUiDateSelect::TimepickerTags.last}/jquery-ui-timepicker-addon.js")
+        end
+
+      end
+      
     end
 
   end
@@ -356,6 +427,87 @@ describe JqUiDateSelect::IncludesHelper do
 
     end
 
+    JqUiDateSelect::JQVersions.each do |v|
+      describe "with args of {:jQuery => '#{v}'}" do
+
+        it "has no jQuery javascript link tag" do
+          jq_ui_date_select_includes(:jQuery => v).should include("<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/#{v}/jquery.min.js\" type=\"text/javascript\"></script>")
+        end
+
+      end
+    end
+
+
+    describe "with args of {:jQuery => :none}" do
+
+      it "has no jQuery javascript link tag" do
+        jq_ui_date_select_includes(:jQuery => :none).should_not include("<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/")
+      end
+
+    end
+
+    describe "with args of {:jQuery => nil}" do
+
+      it "has no jQuery javascript link tag" do
+        jq_ui_date_select_includes(:jQuery => nil).should_not include("<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/")
+      end
+
+    end
+
+    describe "with args of {:jQuery => false}" do
+
+      it "has no jQuery javascript link tag" do
+        jq_ui_date_select_includes(:jQuery => false).should_not include("<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/")
+      end
+
+    end
+
+    JqUiDateSelect::UIVersions.each do |v|
+      describe "with args of {:jQueryUI => '#{v}'}" do
+
+        it "has jQuery UI javascript link tag with a version of '#{v}'" do
+          jq_ui_date_select_includes(:jQueryUI => v).should include("<script src=\"https://ajax.googleapis.com/ajax/libs/jqueryui/#{v}/jquery-ui.min.js\" type=\"text/javascript\"></script>")
+        end
+
+      end
+    end
+
+    describe "with args of {:jQueryUI => :none}" do
+
+      it "has no jQuery UI javascript link tag" do
+        jq_ui_date_select_includes(:jQueryUI => :none).should_not include("<script src=\"https://ajax.googleapis.com/ajax/libs/jqueryui/")
+      end
+
+    end
+
+    describe "with args of {:jQueryUI => nil}" do
+
+      it "has no jQuery UI javascript link tag" do
+        jq_ui_date_select_includes(:jQueryUI => nil).should_not include("<script src=\"https://ajax.googleapis.com/ajax/libs/jqueryui/")
+      end
+
+    end
+
+    describe "with args of {:jQueryUI => false}" do
+
+      it "has no jQuery UI javascript link tag" do
+        jq_ui_date_select_includes(:jQueryUI => false).should_not include("<script src=\"https://ajax.googleapis.com/ajax/libs/jqueryui/")
+      end
+
+    end
+
+    JqUiDateSelect::STYLES.each do |style|
+
+      describe "with args of {:style => #{style[0]}}" do
+
+        it "has the #{style[0]} stylesheet link tag" do
+          jq_ui_date_select_includes(:style => style[0]).should include("<link href=\"https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/themes/#{style[1]}/jquery-ui.css\" media=\"screen\" rel=\"stylesheet\" type=\"text/css\" />")
+        end
+
+      end
+
+    end
+
     describe "with args of {:style => :none}" do
 
       it "has no stylesheet" do
@@ -380,93 +532,48 @@ describe JqUiDateSelect::IncludesHelper do
 
     end
 
-    describe "with args of {:jQuery => :none}" do
+    JqUiDateSelect::TimepickerTags.each do |v|
 
-      it "has no stylesheet" do
-        jq_ui_date_select_includes(:jQuery => :none).should_not include("<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/")
-      end
+      describe "with args of {:TRTimepicker => #{v}}" do
 
-    end
-
-    JqUiDateSelect::JQVersions.each do |v|
-      describe "with args of {:jQuery => '#{v}'}" do
-
-        it "has no stylesheet" do
-          jq_ui_date_select_includes(:jQuery => v).should include("<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/#{v}/jquery.min.js\" type=\"text/javascript\"></script>")
-        end
-
-      end
-    end
-
-
-    describe "with args of {:jQuery => :none}" do
-
-      it "has no stylesheet" do
-        jq_ui_date_select_includes(:jQuery => :none).should_not include("<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/")
-      end
-
-    end
-
-    describe "with args of {:jQuery => nil}" do
-
-      it "has no stylesheet" do
-        jq_ui_date_select_includes(:jQuery => nil).should_not include("<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/")
-      end
-
-    end
-
-    describe "with args of {:jQuery => false}" do
-
-      it "has no stylesheet" do
-        jq_ui_date_select_includes(:jQuery => false).should_not include("<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/")
-      end
-
-    end
-
-    JqUiDateSelect::UIVersions.each do |v|
-      describe "with args of {:jQueryUI => '#{v}'}" do
-
-        it "has no stylesheet" do
-          jq_ui_date_select_includes(:jQueryUI => v).should include("<script src=\"https://ajax.googleapis.com/ajax/libs/jqueryui/#{v}/jquery-ui.min.js\" type=\"text/javascript\"></script>")
-        end
-
-      end
-    end
-
-    describe "with args of {:jQueryUI => :none}" do
-
-      it "has no stylesheet" do
-        jq_ui_date_select_includes(:jQueryUI => :none).should_not include("<script src=\"https://ajax.googleapis.com/ajax/libs/jqueryui/")
-      end
-
-    end
-
-    describe "with args of {:jQueryUI => nil}" do
-
-      it "has no stylesheet" do
-        jq_ui_date_select_includes(:jQueryUI => nil).should_not include("<script src=\"https://ajax.googleapis.com/ajax/libs/jqueryui/")
-      end
-
-    end
-
-    describe "with args of {:jQueryUI => false}" do
-
-      it "has no stylesheet" do
-        jq_ui_date_select_includes(:jQueryUI => false).should_not include("<script src=\"https://ajax.googleapis.com/ajax/libs/jqueryui/")
-      end
-
-    end
-
-    JqUiDateSelect::STYLES.each do |style|
-
-      describe "with args of {:style => #{style[0]}}" do
-
-        it "has the #{style[0]} stylesheet link tag" do
-          jq_ui_date_select_includes(:style => style[0]).should include("<link href=\"https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/themes/#{style[1]}/jquery-ui.css\" media=\"screen\" rel=\"stylesheet\" type=\"text/css\" />")
+        it "has the #{v} Trent Richardson Timepicker javascript link tag" do
+          jq_ui_date_select_includes(:TRTimepicker => v).should include("<script src=\"https://raw.github.com/trentrichardson/jQuery-Timepicker-Addon/#{v}/jquery-ui-timepicker-addon.js\" type=\"text/javascript\"></script>")
         end
 
       end
 
+    end
+
+    describe "with no :TRTimepicker key" do
+
+      it "doesn't return a Trent Richardson Timepicker javascript link tag" do
+        jq_ui_date_select_includes().should_not include("<script src=\"https://raw.github.com/trentrichardson/jQuery-Timepicker-Addon/")
+      end
+
+    end
+
+    describe "with args of {:TRTimepicker => :none}" do
+
+      it "doesn't return a Trent Richardson Timepicker javascript link tag" do
+        jq_ui_date_select_includes(:TRTimepicker => :none).should_not include("<script src=\"https://raw.github.com/trentrichardson/jQuery-Timepicker-Addon/")
+      end
+      
+    end
+
+    describe "with args of {:TRTimepicker => false}" do
+
+      it "doesn't return a Trent Richardson Timepicker javascript link tag" do
+        jq_ui_date_select_includes(:TRTimepicker => false).should_not include("<script src=\"https://raw.github.com/trentrichardson/jQuery-Timepicker-Addon/")
+      end
+      
+    end
+
+    describe "with args of {:TRTimepicker => nil}" do
+
+      it "doesn't return a Trent Richardson Timepicker javascript link tag" do
+        jq_ui_date_select_includes(:TRTimepicker => nil).should_not include("<script src=\"https://raw.github.com/trentrichardson/jQuery-Timepicker-Addon/")
+      end
+      
     end
 
   end
