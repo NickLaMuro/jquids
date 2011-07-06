@@ -52,6 +52,11 @@ module JqUiDateSelect
       jq_vrs = options.has_key?(:jQuery) ? options[:jQuery] : JqUiDateSelect::JQVersions.last
       ui_vrs = options.has_key?(:jQueryUI) ? options[:jQueryUI] : JqUiDateSelect::UIVersions.last
       trtp_vrs = options.has_key?(:TRTimepicker) ? options[:TRTimepicker] : :none
+
+      unless trtp_vrs == :none or trtp_vrs == false or trtp_vrs == nil
+        html_out << "<style type=\"text/css\">.ui-timepicker-div .ui-widget-header{margin-bottom:8px;}.ui-timepicker-div dl{text-align:left;}.ui-timepicker-div dl dt{height:25px;}.ui-timepicker-div dl dd{margin:-25px 0 10px 65px;}.ui-timepicker-div td{font-size:90%;}</style>\n"
+      end
+
       html_out << javascript_include_tag(jq_ui_javascripts(jq_vrs, ui_vrs, trtp_vrs)) + "\n"
 
       options[:datepicker_options] ||= {}
@@ -82,18 +87,51 @@ module JqUiDateSelect
 
       html_out << '<script type="text/javascript">$.datepicker.setDefaults(' + datepicker_options + ');'
 
+
+      unless trtp_vrs == :none or trtp_vrs == false or trtp_vrs == nil
+        options[:timepicker_options] ||= {}
+        
+        # Some opiniated defaults (basically an attempt to make the jQuery
+        # datepicker similar to the calendar_date_select with out making
+        # modifications or having local dependencies)
+        # Sets the time format based off of the current format
+        options[:timepicker_options][:ampm] = JqUiDateSelect.format[:ampm]
+        options[:timepicker_options][:timeFormat] = JqUiDateSelect.format[:tr_js_time]
+
+        timepicker_options = 
+          if options[:timepicker_options].respond_to?(:to_json)
+              options.delete(:timepicker_options).to_json
+          else
+            begin
+              JSON.unparse(options.delete(:timepicker_options))
+            rescue
+              ""
+            end
+          end
+
+        html_out << '$.timepicker.setDefaults(' + timepicker_options + ');'
+      end
+
       # A minified version of this javascript.
       #   <script type="text/javascript">
       #     $(document).ready(function(){
-      #        $(".jq_ui_ds_dp").each(function(){
-      #          var s = $(this).attr("data-jqdatepicker");
-      #          $(this).attr("data-jqdatepicker") ? $(this).datepicker(JSON.parse(s)) : $(this).datepicker();
-      #        });
+      #       $(".jq_ui_ds_dp").each(function(){
+      #         var s = $(this).attr("data-jquipicker");
+      #         $(this).attr("data-jquipicker") ? $(this).datepicker(JSON.parse(s)) : $(this).datepicker();
+      #       });
+      #       $(".jq_ui_ds_tp").each(function(){
+      #         var s = $(this).attr("data-jquipicker");
+      #         $(this).attr("data-jquipicker") ? $(this).timepicker(JSON.parse(s)) : $(this).timepicker();
+      #       });
+      #       $(".jq_ui_ds_dtp").each(function(){
+      #         var s=$(this).attr("data-jquipicker");
+      #         $(this).attr("data-jquipicker")?$(this).datetimepicker(JSON.parse(s)) : $(this).datetimepicker()
+      #       })
       #     });
       #   </script>
       #
       # Used to parse out options for each datepicker instance
-      html_out << '$(document).ready(function(){$(".jq_ui_ds_dp").each(function(){var s=$(this).attr("data-jqdatepicker");$(this).attr("data-jqdatepicker")?$(this).datepicker(JSON.parse(s)):$(this).datepicker()})});</script>'
+      html_out << '$(document).ready(function(){$(".jq_ui_ds_dp").each(function(){var s=$(this).attr("data-jquipicker");$(this).attr("data-jquipicker")?$(this).datepicker(JSON.parse(s)):$(this).datepicker()});$(".jq_ui_ds_tp").each(function(){var s=$(this).attr("data-jquipicker");$(this).attr("data-jquipicker")?$(this).timepicker(JSON.parse(s)):$(this).timepicker()});$(".jq_ui_ds_dtp").each(function(){var s=$(this).attr("data-jquipicker");$(this).attr("data-jquipicker")?$(this).datetimepicker(JSON.parse(s)):$(this).datetimepicker()})});</script>'
 
       if html_out.respond_to?(:html_safe)
         return html_out.html_safe

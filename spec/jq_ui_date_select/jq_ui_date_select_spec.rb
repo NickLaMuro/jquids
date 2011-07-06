@@ -13,7 +13,7 @@ describe JqUiDateSelect do
     describe "The default format" do
    
       it "should return the natural format" do
-        JqUiDateSelect.format.should == {:date => "%B %d, %Y", :time => " %I:%M %p", :js_date => "MM dd, yy"}
+        JqUiDateSelect.format.should == {:date => "%B %d, %Y", :time => " %I:%M %p", :js_date => "MM dd, yy", :tr_js_time => "hh:mm TT", :ampm => true}
       end
 
     end
@@ -33,7 +33,7 @@ describe JqUiDateSelect do
         describe "to '#{format[0]}'" do
 
           it "should start with a default of 'natural' format" do
-            JqUiDateSelect.format.should == {:date => "%B %d, %Y", :time => " %I:%M %p", :js_date => "MM dd, yy"}
+            JqUiDateSelect.format.should == {:date => "%B %d, %Y", :time => " %I:%M %p", :js_date => "MM dd, yy", :tr_js_time => "hh:mm TT", :ampm => true}
           end
 
           it "should set the format to '#{format[0]}' when 'format=' is called" do

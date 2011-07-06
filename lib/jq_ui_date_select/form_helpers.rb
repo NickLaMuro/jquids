@@ -2,33 +2,40 @@ module JqUiDateSelect
   module FormHelpers
 
     def jq_ui_date_select_tag(name, value=nil, options = {})
-      options[:class] ? options[:class] += " jq_ui_ds_dp" : options[:class] = "jq_ui_ds_dp"
       JqUiDateSelect.jq_ui_date_select_process_options(options)
 
-      unless options[:datepicker_options].nil?
-        options["data-jqdatepicker"] = 
-          if options[:datepicker_options].respond_to?(:to_json)
-            options.delete(:datepicker_options).to_json 
-          else
-            begin
-              JSON.unparse(options.delete(:datepicker_options))
-            rescue
-              ""
-            end
-          end
-      end
+      jsonify_options options
 
       value = JqUiDateSelect.format_time(value)
+
+      options[:class] ? options[:class] += " #{jq_ui_ds_class(options)}" : options[:class] = jq_ui_ds_class(options)
+
       text_field_tag(name, value, options)
     end
 
     def jq_ui_date_select(model, method, options ={})
       obj = options[:object] || instance_variable_get("@#{model}")
-      options[:class] ? options[:class] += " jq_ui_ds_dp" : options[:class] = "jq_ui_ds_dp"
       JqUiDateSelect.jq_ui_date_select_process_options(options)
 
-      unless options[:datepicker_options].nil?
-        options["data-jqdatepicker"] =
+      jsonify_options options
+
+      options[:value] ||=
+        begin
+          obj.send(method).strftime(JqUiDateSelect.date_format_string(false))
+        rescue
+          nil
+        end
+
+      options[:class] ? options[:class] += " #{jq_ui_ds_class(options)}" : options[:class] = jq_ui_ds_class(options)
+
+      text_field(model, method, options)
+    end
+
+    def jsonify_options(options)
+      unless options[:datepicker_options].nil? and options[:timepicker_options].nil?
+        options[:datepicker_options] ||= {}
+        options[:datepicker_options] = options[:datepicker_options].merge(options.delete(:timepicker_options)) unless options[:timepicker_options].nil?
+        options["data-jquipicker"] =
           if options[:datepicker_options].respond_to?(:to_json)
             options.delete(:datepicker_options).to_json
           else
@@ -39,20 +46,16 @@ module JqUiDateSelect
             end
           end
       end
+    end
 
-      options[:value] ||=
-        begin
-          obj.send(method).strftime(JqUiDateSelect.date_format_string(false))
-        rescue
-          nil
-        end
-
-      text_field(model, method, options)
+    def jq_ui_ds_class(options)
+      result = "jq_ui_ds_"
+      result << "d" unless options.delete(:calendar) == false
+      result << "t" if options.delete(:time) == true
+      result << "p"
     end
 
   end
-
-
 end
 
 # Helper method for form builders

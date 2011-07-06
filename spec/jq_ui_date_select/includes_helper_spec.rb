@@ -237,11 +237,19 @@ describe JqUiDateSelect::IncludesHelper do
     end
 
     it "has the options parsing script" do
-      jq_ui_date_select_includes.should include('$(document).ready(function(){$(".jq_ui_ds_dp").each(function(){var s=$(this).attr("data-jqdatepicker");$(this).attr("data-jqdatepicker")?$(this).datepicker(JSON.parse(s)):$(this).datepicker()})});</script>')
+      jq_ui_date_select_includes.should include('$(document).ready(function(){$(".jq_ui_ds_dp").each(function(){var s=$(this).attr("data-jquipicker");$(this).attr("data-jquipicker")?$(this).datepicker(JSON.parse(s)):$(this).datepicker()});$(".jq_ui_ds_tp").each(function(){var s=$(this).attr("data-jquipicker");$(this).attr("data-jquipicker")?$(this).timepicker(JSON.parse(s)):$(this).timepicker()});$(".jq_ui_ds_dtp").each(function(){var s=$(this).attr("data-jquipicker");$(this).attr("data-jquipicker")?$(this).datetimepicker(JSON.parse(s)):$(this).datetimepicker()})});</script>')
     end
 
-    it "has the setDefaults javascript function" do
+    it "has the datepicker.setDefaults javascript function" do
       jq_ui_date_select_includes.should include("<script type=\"text/javascript\">$.datepicker.setDefaults({")
+    end
+
+    it "does not have the timepicker.setDefaults javascript function" do
+      jq_ui_date_select_includes.should_not include("$.timepicker.setDefaults({")
+    end
+
+    it "does not have the timepicker css" do
+      jq_ui_date_select_includes().should_not include('<style type="text/css">.ui-timepicker-div .ui-widget-header{margin-bottom:8px;}.ui-timepicker-div dl{text-align:left;}.ui-timepicker-div dl dt{height:25px;}.ui-timepicker-div dl dd{margin:-25px 0 10px 65px;}.ui-timepicker-div td{font-size:90%;}</style>')
     end
 
     describe "without datepicker_options" do
@@ -268,7 +276,35 @@ describe JqUiDateSelect::IncludesHelper do
 
     end
 
-    describe "without datepicker_options and the format is set to finnish" do
+    describe "without timepicker_options" do
+
+      it "does not have timeFormat set to ':natural'" do
+        jq_ui_date_select_includes.should_not include('"timeFormat":"hh:mm TT"')
+      end
+
+      it "does not have ampm set to true" do
+        jq_ui_date_select_includes.should_not include('"ampm":true')
+      end
+
+    end
+
+    describe "without timepicker_options but :TRTimepicker => v0.9.5" do
+
+      it "returns timeFormat set to ':natural'" do
+        jq_ui_date_select_includes(:TRTimepicker => "v0.9.5").should include('"timeFormat":"hh:mm TT"')
+      end
+
+      it "returns ampm set to true" do
+        jq_ui_date_select_includes(:TRTimepicker => "v0.9.5").should include('"ampm":true')
+      end
+
+      it "returns the timepicker css" do
+        jq_ui_date_select_includes(:TRTimepicker => "v0.9.5").should include('<style type="text/css">.ui-timepicker-div .ui-widget-header{margin-bottom:8px;}.ui-timepicker-div dl{text-align:left;}.ui-timepicker-div dl dt{height:25px;}.ui-timepicker-div dl dd{margin:-25px 0 10px 65px;}.ui-timepicker-div td{font-size:90%;}</style>')
+      end
+
+    end
+
+    describe "without datepicker_options or timepicker_options and the format is set to finnish" do
 
       before(:each) do
         JqUiDateSelect.format = :finnish
@@ -292,6 +328,22 @@ describe JqUiDateSelect::IncludesHelper do
 
       it "has dateFormat set to ':finnish'" do
         jq_ui_date_select_includes.should include('"dateFormat":"dd.mm.yy"')
+      end
+
+      describe "with :TRTimepicker => 'v0.9.7'" do
+
+        it "has timeFormat set to ':finish'" do
+          jq_ui_date_select_includes(:TRTimepicker => "v0.9.5").should include('"timeFormat":"hh:mm"')
+        end
+
+        it "has ampm set to true" do
+          jq_ui_date_select_includes(:TRTimepicker => "v0.9.5").should include('"ampm":false')
+        end
+
+        it "returns the timepicker css" do
+          jq_ui_date_select_includes(:TRTimepicker => "v0.9.5").should include('<style type="text/css">.ui-timepicker-div .ui-widget-header{margin-bottom:8px;}.ui-timepicker-div dl{text-align:left;}.ui-timepicker-div dl dt{height:25px;}.ui-timepicker-div dl dd{margin:-25px 0 10px 65px;}.ui-timepicker-div td{font-size:90%;}</style>')
+        end
+
       end
 
     end
@@ -320,6 +372,22 @@ describe JqUiDateSelect::IncludesHelper do
 
       it "has dateFormat set to ':finnish'" do
         @output.should include('"dateFormat":"dd.mm.yy"')
+      end
+
+      describe "with :TRTimepicker => 'v0.9.7'" do
+
+        before(:each) do
+          @output = jq_ui_date_select_includes(:format => :finnish, :TRTimepicker => "v0.9.5") 
+        end
+
+        it "has timeFormat set to ':finish'" do
+          @output.should include('"timeFormat":"hh:mm"')
+        end
+
+        it "has ampm set to true" do
+          @output.should include('"ampm":false')
+        end
+
       end
 
     end
