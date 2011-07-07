@@ -4,7 +4,7 @@ module JqUiDateSelect
     def jq_ui_date_select_tag(name, value=nil, options = {})
       JqUiDateSelect.jq_ui_date_select_process_options(options)
 
-      jsonify_options options
+      jsonify_opts options
 
       value = JqUiDateSelect.format_time(value)
 
@@ -17,7 +17,7 @@ module JqUiDateSelect
       obj = options[:object] || instance_variable_get("@#{model}")
       JqUiDateSelect.jq_ui_date_select_process_options(options)
 
-      jsonify_options options
+      jsonify_opts options
 
       options[:value] ||=
         begin
@@ -31,7 +31,7 @@ module JqUiDateSelect
       text_field(model, method, options)
     end
 
-    def jsonify_options(options)
+    def jsonify_opts(options)
       unless options[:datepicker_options].nil? and options[:timepicker_options].nil?
         options[:datepicker_options] ||= {}
         options[:datepicker_options] = options[:datepicker_options].merge(options.delete(:timepicker_options)) unless options[:timepicker_options].nil?

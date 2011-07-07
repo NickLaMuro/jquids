@@ -57,8 +57,14 @@ module JqUiDateSelect
 
   end
 
+  # Processes old CalendarDateSelect options and converts them to the
+  # coresponding jQuery UI options values for the timepicker and datepicker.
+  #
+  # If no keys exist for :timepicker_options or :datepicker options, they are
+  # removed to avoid the client side processing.
   def self.jq_ui_date_select_process_options(options = {})
     options[:datepicker_options] ||= {}
+    options[:timepicker_options] ||= {}
 
     if options.has_key?(:year_range)
       if options[:year_range].respond_to?(:first)
@@ -80,6 +86,29 @@ module JqUiDateSelect
     end
     options.delete(:month_year)
 
+    if options.has_key?(:minute_interval) and options[:minute_interval].is_a?(Numeric)
+      options[:timepicker_options][:stepMinute] = options[:minute_interval] 
+    end
+    options.delete(:minute_interval)
+
+    if options.delete(:popup).to_s == 'force'
+      options[:readonly] = true
+    end
+
+    if default_time = options.delete(:default_time)
+      options[:datepicker_options][:defaultDate] = 
+        if default_time.respond_to? :strftime
+          default_time.strftime(JqUiDateSelect.date_format_string(false))
+        else
+          default_time
+        end
+      if default_time.respond_to?(:hour)
+        options[:timepicker_options][:hour] = default_time.hour
+        options[:timepicker_options][:minute] = default_time.min
+        options[:timepicker_options][:second] = default_time.sec
+      end
+    end
+
     #if options.has_key?(:image)
       #options[:datepicker_options][:buttonImageOnly] = true
       #options[:datepicker_options][:buttonImage] = image_path(options[:image])
@@ -88,6 +117,7 @@ module JqUiDateSelect
 
     # For slightly trimming unneeded html, and for less client side processing
     options.delete(:datepicker_options) if options[:datepicker_options].keys.count <= 0
+    options.delete(:timepicker_options) if options[:timepicker_options].keys.count <= 0
     options
   end
 

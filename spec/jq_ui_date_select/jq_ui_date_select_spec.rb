@@ -230,6 +230,101 @@ describe JqUiDateSelect do
   end
 
   describe "The 'jq_ui_date_select_process_options' function" do
+
+    describe "with :default_tim" do
+
+      describe "equaling Time.parse('January 1, 2001 5:00 PM')" do
+
+        it "returns {:datepicker_options => {:defaultDate => 'January 01, 2001'}, :timepicker_options => {:hour => 5, :minute => 0, :second => 0}}" do
+          JqUiDateSelect.jq_ui_date_select_process_options({:default_time => Time.parse("January 1, 2001 5:00 PM")}).should ==
+            {:datepicker_options => {:defaultDate => 'January 01, 2001'}, :timepicker_options => {:hour => 17, :minute => 0, :second => 0}}
+        end
+
+      end
+
+      describe "equaling Date.parse('January 1, 2001 5:00 PM')" do
+
+        it "returns {:datepicker_options => {:defaultDate => 'January 01, 2001'}}" do
+          JqUiDateSelect.jq_ui_date_select_process_options({:default_time => Date.parse("January 1, 2001 5:00 PM")}).should ==
+            {:datepicker_options => {:defaultDate => 'January 01, 2001'}}
+        end
+
+      end
+
+      describe "equaling 'pancakes'" do
+
+        it "returns {:datepicker_options => {:defaultDate => 'pancakes'}}" do
+          JqUiDateSelect.jq_ui_date_select_process_options({:default_time => 'pancakes'}).should ==
+            {:datepicker_options => {:defaultDate => 'pancakes'}}
+        end
+
+      end
+
+    end
+
+    describe "with :popup" do
+
+      describe "equaling 'force'" do
+
+        it "should return :readonly => true" do
+          JqUiDateSelect.jq_ui_date_select_process_options({:popup => "force"}).should == {:readonly => true}
+        end
+
+      end
+
+      describe "equaling :force" do
+
+        it "should return :readonly => true" do
+          JqUiDateSelect.jq_ui_date_select_process_options({:popup => :force}).should == {:readonly => true}
+        end
+
+      end
+
+      describe "equaling 'pancakes'" do
+
+        it "should return :readonly => true" do
+          JqUiDateSelect.jq_ui_date_select_process_options({:popup => 'pancakes'}).should == {}
+        end
+
+      end
+
+      describe "equaling :pancakes" do
+
+        it "should return :readonly => true" do
+          JqUiDateSelect.jq_ui_date_select_process_options({:popup => :pancakes}).should == {}
+        end
+
+      end
+
+    end
+
+    describe "with :minute_interval" do
+
+      describe "equaling 15" do
+
+        it "returns :timepicker_options => {:stepMinute => 15}" do
+          JqUiDateSelect.jq_ui_date_select_process_options({:minute_interval => 15}).should == {:timepicker_options => {:stepMinute => 15}}
+        end
+
+      end
+
+      describe "equaling 0.15" do
+
+        it "returns :timepicker_options => {:stepMinute => 15}" do
+          JqUiDateSelect.jq_ui_date_select_process_options({:minute_interval => 0.15}).should == {:timepicker_options => {:stepMinute => 0.15}}
+        end
+
+      end
+
+      describe "equaling 'pancakes'" do
+
+        it "returns {}" do
+          JqUiDateSelect.jq_ui_date_select_process_options({:minute_interval => "pancakes"}).should == {}
+        end
+
+      end
+
+    end
     
     describe "with :year_range" do
       

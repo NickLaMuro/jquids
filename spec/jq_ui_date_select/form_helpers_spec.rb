@@ -1,6 +1,7 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
 describe JqUiDateSelect::FormHelpers do
+
   include ActionView::Helpers::FormHelper
   include ActionView::Helpers::TagHelper
   include ActionView::Helpers::FormTagHelper
@@ -248,13 +249,13 @@ describe JqUiDateSelect::FormHelpers do
 
   end
 
-  describe "The jsonify_options function" do
+  describe "The jsonify_opts function" do
 
     describe "without :datepicker_options or :timepicker_options" do
 
       it "doesn't change the options hash" do
         options = {}
-        jsonify_options(options)
+        jsonify_opts(options)
         options.should == {}
       end
 
@@ -264,7 +265,7 @@ describe JqUiDateSelect::FormHelpers do
       
       it "will add 'data-jquipicker' key and remove the :datepicker_options key" do
         options = {:datepicker_options => {:autoSize => true}}
-        jsonify_options(options)
+        jsonify_opts(options)
         options.should == {"data-jquipicker" => '{"autoSize":true}'}
       end
 
@@ -274,7 +275,7 @@ describe JqUiDateSelect::FormHelpers do
       
       it "will add 'data-jquipicker' key and remove the :timepicker_options and :datepicker_options keys" do
         options = {:datepicker_options => {:autoSize => true}, :timepicker_options => {:ampm => true}}
-        jsonify_options(options)
+        jsonify_opts(options)
         options.should == {"data-jquipicker" => '{"autoSize":true,"ampm":true}'}
       end
 
@@ -284,7 +285,7 @@ describe JqUiDateSelect::FormHelpers do
       
       it "will add 'data-jquipicker' key and remove the :datepicker_options key" do
         options = {:timepicker_options => {:ampm => true}}
-        jsonify_options(options)
+        jsonify_opts(options)
         options.should == {"data-jquipicker" => '{"ampm":true}'}
       end
 
