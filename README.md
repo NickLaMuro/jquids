@@ -193,21 +193,15 @@ The default format is `:natural`.  Other formats include:
 The only two formats currently with time
 in am-pm is `:natural`, `:hyphen_ampm`, and `:american`.
 
-**NOTE:** Currently time is NOT implemented into the datepicker because jQuery
-does not support time with it's date picker.  A fix for that will come in the
-future.
-
 
 TODO
 ----
 
-- Allow for the choice to use different versions of jQuery and jQuery UI, or
-  not include them all together
 - Allow for setting the format via the `jq_ui_date_select_includes` method and
-  the ability to set it on a case by case basis
+  the ability to set it on a case by case basis (implemented, but has a bug)
 - Map the option settings for CalendarDateSelect to JqUiDateSelect
-- Add time module to the datepicker
-- Get it to work in rails 2 and 3
+- Get callbacks working
+- Get it to work in rails 2 and 3 (with tests)
 - Integrate with formtastic
 
 

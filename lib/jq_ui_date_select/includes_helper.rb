@@ -53,6 +53,8 @@ module JqUiDateSelect
       ui_vrs = options.has_key?(:jQueryUI) ? options[:jQueryUI] : JqUiDateSelect::UIVersions.last
       trtp_vrs = options.has_key?(:TRTimepicker) ? options[:TRTimepicker] : :none
 
+      # A little bit of css of the timepicker, and it is not added if the
+      # timepicker javascript file is not included
       unless trtp_vrs == :none or trtp_vrs == false or trtp_vrs == nil
         html_out << "<style type=\"text/css\">.ui-timepicker-div .ui-widget-header{margin-bottom:8px;}.ui-timepicker-div dl{text-align:left;}.ui-timepicker-div dl dt{height:25px;}.ui-timepicker-div dl dd{margin:-25px 0 10px 65px;}.ui-timepicker-div td{font-size:90%;}</style>\n"
       end

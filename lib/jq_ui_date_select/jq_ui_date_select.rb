@@ -1,5 +1,6 @@
 module JqUiDateSelect
 
+  extend ActionView::Helpers::AssetTagHelper
   require File.dirname(__FILE__) + "/constants/formats.rb"
 
   # Sets the format for the jq_ui_date_select class
@@ -109,11 +110,12 @@ module JqUiDateSelect
       end
     end
 
-    #if options.has_key?(:image)
-      #options[:datepicker_options][:buttonImageOnly] = true
-      #options[:datepicker_options][:buttonImage] = image_path(options[:image])
-      #options.delete(:image)
-    #end
+    if options.has_key?(:image)
+      options[:datepicker_options][:showOn] ||= 'button'
+      options[:datepicker_options][:buttonImageOnly] = true
+      options[:datepicker_options][:buttonImage] = image_path(options[:image])
+      options.delete(:image)
+    end
 
     # For slightly trimming unneeded html, and for less client side processing
     options.delete(:datepicker_options) if options[:datepicker_options].keys.count <= 0

@@ -405,27 +405,36 @@ describe JqUiDateSelect do
 
     end
 
-    #describe "with :image" do
+    describe "with :image" do
 
-      #describe "equals 'groovy.png'" do
+      describe "equals 'groovy.png'" do
 
-        #it "returns :datepicker_options => {:buttonImage => '/images/groovy.png', :buttonImageOnly => true}" do
-          #output = JqUiDateSelect.jq_ui_date_select_process_options({:image => 'groovy.png'})
-          #output.should == {:datepicker_options => {:buttonImage => '/images/groovy.png', :buttonImageOnly => true}}
-        #end
+        it "returns :datepicker_options => {:buttonImage => '/images/groovy.png', :buttonImageOnly => true}" do
+          output = JqUiDateSelect.jq_ui_date_select_process_options({:image => 'groovy.png'})
+          output.should == {:datepicker_options => {:buttonImage => '/images/groovy.png', :buttonImageOnly => true, :showOn => "button"}}
+        end
 
-      #end
+        describe "with :datepicker_options => {:showOn} already set" do
 
-      #describe "equals 'http://www.google.com/images/MindControl.gif'" do
+          it "returns :datepicker_options => {:buttonImage => '/images/groovy.png', :buttonImageOnly => true}" do
+            output = JqUiDateSelect.jq_ui_date_select_process_options({:image => 'groovy.png', :datepicker_options => {:showOn => "both"}})
+            output.should == {:datepicker_options => {:buttonImage => '/images/groovy.png', :buttonImageOnly => true, :showOn => "both"}}
+          end
 
-        #it "reuturns :datepicker_options => {:buttonImage => 'http://www.google.com/images/MindControl.gif', :buttonImageOnly => true}" do
-          #output = JqUiDateSelect.jq_ui_date_select_process_options({:image => 'http://www.google.com/images/MindControl.gif'})
-          #output.should == {:datepicker_options => {:buttonImage => 'http://www.google.com/images/MindControl.gif', :buttonImageOnly => true}}
-        #end
+        end
+
+      end
+
+      describe "equals 'http://www.google.com/images/MindControl.gif'" do
+
+        it "reuturns :datepicker_options => {:buttonImage => 'http://www.google.com/images/MindControl.gif', :buttonImageOnly => true}" do
+          output = JqUiDateSelect.jq_ui_date_select_process_options({:image => 'http://www.google.com/images/MindControl.gif'})
+          output.should == {:datepicker_options => {:buttonImage => 'http://www.google.com/images/MindControl.gif', :buttonImageOnly => true, :showOn => 'button'}}
+        end
           
-      #end
+      end
 
-    #end
+    end
 
   end
 
