@@ -1,5 +1,5 @@
-JQ UI Date Select
-=================
+Jquids
+======
 
 This is a rewrite of Tim Harper's "Calendar Date Select" gem
 (https://github.com/timcharper/calendar_date_select) using the jQuery UI date
@@ -11,17 +11,20 @@ The projects intent is to simulate the ease of use of the original while:
 - Using the hosted jQuery UI infastructure to avoid local dependencies
 
 
+Jquids stands for *JQ*uery *UI* *D*ate *S*elect
+
+
 Usage
 -----
 
 Add the following some where in your page (preferablly in the head of your
 layout file):
 
-    <%= jq_ui_date_select_includes %>
+    <%= jquids_includes %>
 
-Change a field to so it uses the `jq_ui_date_select_tag`:
+Change a field to so it uses the `jquids_tag`:
 
-    <%= jq_ui_date_select_tag "some_date" %>
+    <%= jquids_tag "some_date" %>
 
 and you should be good to go!
 
@@ -30,7 +33,7 @@ Customization
 -------------
 
 CalendarDateSelect allow for the use of many different formats and css styles,
-and JqUiDateSelect was made to allow for that same kind of flexibility, with
+and Jquids was made to allow for that same kind of flexibility, with
 out all of the weight of an full library of javascript and css files in your
 public folder.
 
@@ -38,18 +41,18 @@ public folder.
 ### jQeury Version
 
 To specify a different version of jQuery, just include :jQuery => "X.X.X" to
-your 'jq_ui_date_select_includes' method:
+your 'jquids_includes' method:
 
-    <%= jq_ui_date_select_includes :jQuery => "1.6.0" %>
+    <%= jquids_includes :jQuery => "1.6.0" %>
 
 A list of supported versions numbers can be found at the bottom of the page.
 
 Because it is entirely possible that you are already using jQuery in your
 application, the option is given to you to not include jQuery using
-JqUiDateSelect.  To do that, just add :jQuery => :none to your
-'jq_ui_date_select_includes' method:
+Jquids.  To do that, just add :jQuery => :none to your
+'jquids_includes' method:
 
-    <%= jq_ui_date_select_includes :jQuery => :none %>
+    <%= jquids_includes :jQuery => :none %>
 
 and now jQuery will not be included into your plugin.
 
@@ -59,14 +62,14 @@ and now jQuery will not be included into your plugin.
 Just like you can specify a specific version of jQuery, you can also specify a
 version of jQuery UI that you would prefer to use:
 
-    <%= jq_ui_date_select_includes :jQueryUI => "1.8.0" %>
+    <%= jquids_includes :jQueryUI => "1.8.0" %>
 
 A list of supported version numbers can be found at the bottom of the page.
 
-You are also able tell the JqUiDateSelect not to load jQuery UI in the same way
+You are also able tell the Jquids not to load jQuery UI in the same way
 that you did with jQuery:
 
-    <%= jq_ui_date_select_includes :jQueryUI => :none %>
+    <%= jquids_includes :jQueryUI => :none %>
 
 You may also use `nil` or `false`.
 
@@ -74,9 +77,9 @@ You may also use `nil` or `false`.
 ### Custom Style
 
 To change the style, just add `:style => :new_style` to the
-`jq_ui_date_select_includes` declaration:
+`jquids_includes` declaration:
 
-    <%= jq_ui_date_select_includes :style => :vader %>
+    <%= jquids_includes :style => :vader %>
 
 And the new style will be applied.  All styles come from the Google CDN
 (http://code.google.com/apis/libraries/devguide.html), so they are not hosted
@@ -91,15 +94,15 @@ below.
 ### Custom Format
 
 To set the format the same way that was done with CalendarDateSelect, just set
-the JqUiDateSelect format variable using the `format=` function somewhere in
+the Jquids format variable using the `format=` function somewhere in
 your code:
 
-    <% JqUiDateSelect.format= :american %>
+    <% Jquids.format= :american %>
 
-or you can set it in `jq_ui_date_select_includes` method by setting the
+or you can set it in `jquids_includes` method by setting the
 `:format` variable in the options hash:
 
-    <%= jq_ui_date_select_includes :format => :american %>
+    <%= jquids_includes :format => :american %>
 
 All the formats used mimic what was used in the original CalendarDateSelect
 gem.  The formats available are listed below.
@@ -108,22 +111,22 @@ gem.  The formats available are listed below.
 ### Customizing the jQuery UI Datepicker
 
 The jQuery datepicker has many options that you can implement through
-JqUiDateSelect via the `:datepicker_options` hash.  To add an option to a
+Jquids via the `:datepicker_options` hash.  To add an option to a
 single datepicker element, simply add the hash as an argument to
-`jq_ui_date_select_tag` call:
+`jquids_tag` call:
 
-    <%= jq_ui_date_select_tag "some_date", nil, :datepicker_options => {:showButtonPanel => true} %>
+    <%= jquids_tag "some_date", nil, :datepicker_options => {:showButtonPanel => true} %>
 
 and now the datepicker will use the jQueryUI's button panel at the bottom of
 the datepicker for that instance.  But if you have multiple instances that all
 should have the `showButtonPanel` equal to true, add the `:datepicker_options`
-to the `jq_ui_date_select_includes`:
+to the `jquids_includes`:
 
-    <%= jq_ui_date_select_includes :datepicker_options => {:showButtonPanel => true} %>
+    <%= jquids_includes :datepicker_options => {:showButtonPanel => true} %>
 
 and the change will be applied to all instances of the datepicker.  You can
 overide that change by setting the setting to false on the desired
-`jq_ui_date_select_tag` instances.
+`jquids_tag` instances.
 
 A full list of all of the jQueryUI functions can be found here:
 http://jqueryui.com/demos/datepicker/#options
@@ -145,7 +148,7 @@ Styles
 ------
 
 The default style is `:base`.  The following can be implemented via the
-`jq_ui_date_select_includes` function:
+`jquids_includes` function:
 
 * `:base`
 * `:black_tie`
@@ -197,9 +200,9 @@ in am-pm is `:natural`, `:hyphen_ampm`, and `:american`.
 TODO
 ----
 
-- Allow for setting the format via the `jq_ui_date_select_includes` method and
+- Allow for setting the format via the `jquids_includes` method and
   the ability to set it on a case by case basis (implemented, but has a bug)
-- Map the option settings for CalendarDateSelect to JqUiDateSelect
+- Map the option settings for CalendarDateSelect to Jquids
 - Get callbacks working
 - Get it to work in rails 2 and 3 (with tests)
 - Integrate with formtastic

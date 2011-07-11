@@ -17,7 +17,7 @@ require "active_support/core_ext"
 require "ostruct"
 
 $: << (File.dirname(__FILE__) + "/../lib")
-require "jq_ui_date_select"
+require "jquids"
 
 #RSpec.configure do |config|
 #end

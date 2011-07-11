@@ -1,4 +1,4 @@
-module JqUiDateSelect
+module Jquids
   STYLES = {
     :base => "base",
     :black_tie => "black-tie",

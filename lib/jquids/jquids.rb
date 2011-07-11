@@ -1,21 +1,21 @@
-module JqUiDateSelect
+module Jquids
 
   extend ActionView::Helpers::AssetTagHelper
   require File.dirname(__FILE__) + "/constants/formats.rb"
 
-  # Sets the format for the jq_ui_date_select class
+  # Sets the format for the jquids class
   #   If a format doesn't exist, and error is through
   #   Else the format variable is set
   def self.format=(key)
-    raise JqUiDateSelect::NotAKnownFormat, "JqUiDateSelect: Unrecognized format specification: #{key}" unless JqUiDateSelect::FORMATS.has_key?(key)
-    @jq_ui_date_select_format = JqUiDateSelect::FORMATS[key]
+    raise Jquids::NotAKnownFormat, "Jquids: Unrecognized format specification: #{key}" unless Jquids::FORMATS.has_key?(key)
+    @jquids_format = Jquids::FORMATS[key]
   end
 
   # Gets the format variable
   #   If a format is set, it grabs it
   #   Else it will set it to the default format (:natural)
   def self.format
-    @jq_ui_date_select_format ||= JqUiDateSelect::FORMATS[:natural]
+    @jquids_format ||= Jquids::FORMATS[:natural]
   end
 
   # Gets a format string based off of the current format
@@ -63,7 +63,7 @@ module JqUiDateSelect
   #
   # If no keys exist for :timepicker_options or :datepicker options, they are
   # removed to avoid the client side processing.
-  def self.jq_ui_date_select_process_options(options = {})
+  def self.jquids_process_options(options = {})
     options[:datepicker_options] ||= {}
     options[:timepicker_options] ||= {}
 
@@ -99,7 +99,7 @@ module JqUiDateSelect
     if default_time = options.delete(:default_time)
       options[:datepicker_options][:defaultDate] = 
         if default_time.respond_to? :strftime
-          default_time.strftime(JqUiDateSelect.date_format_string(false))
+          default_time.strftime(Jquids.date_format_string(false))
         else
           default_time
         end

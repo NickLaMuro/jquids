@@ -1,4 +1,4 @@
-module JqUiDateSelect
+module Jquids
   FORMATS = {
     :natural => {
       :date => "%B %d, %Y",

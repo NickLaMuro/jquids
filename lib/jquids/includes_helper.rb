@@ -1,4 +1,4 @@
-module JqUiDateSelect
+module Jquids
   module IncludesHelper
 
     require File.dirname(__FILE__) + "/constants/styles.rb"
@@ -7,22 +7,22 @@ module JqUiDateSelect
     require File.dirname(__FILE__) + "/constants/timepicker_tags.rb"
 
     def jq_ui_stylesheet(style = :base)
-      raise JqUiDateSelect::NotAKnownStyle, "JqUiDateSelect: Unrecognized style specification: #{style}" unless JqUiDateSelect::STYLES.has_key?(style)
-      "https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/themes/#{JqUiDateSelect::STYLES[style]}/jquery-ui.css"
+      raise Jquids::NotAKnownStyle, "Jquids: Unrecognized style specification: #{style}" unless Jquids::STYLES.has_key?(style)
+      "https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/themes/#{Jquids::STYLES[style]}/jquery-ui.css"
     end
 
     def jq_ui_javascripts(jq, ui, tp)
       includes = []
       unless jq == :none or jq == nil or jq == false
-        jq = JqUiDateSelect::JQVersions.member?(jq) ? jq : JqUiDateSelect::JQVersions.last
+        jq = Jquids::JQVersions.member?(jq) ? jq : Jquids::JQVersions.last
         includes << "https://ajax.googleapis.com/ajax/libs/jquery/#{jq}/jquery.min.js" 
       end
       unless ui == :none or ui == nil or ui == false
-        ui = JqUiDateSelect::UIVersions.member?(ui) ? ui : JqUiDateSelect::UIVersions.last
+        ui = Jquids::UIVersions.member?(ui) ? ui : Jquids::UIVersions.last
         includes << "https://ajax.googleapis.com/ajax/libs/jqueryui/#{ui}/jquery-ui.min.js" 
       end
       unless tp == :none or tp == nil or tp == false
-        tp = JqUiDateSelect::TimepickerTags.member?(tp) ? tp : JqUiDateSelect::TimepickerTags.last
+        tp = Jquids::TimepickerTags.member?(tp) ? tp : Jquids::TimepickerTags.last
         includes << "https://raw.github.com/trentrichardson/jQuery-Timepicker-Addon/#{tp}/jquery-ui-timepicker-addon.js"
       end
       includes
@@ -37,10 +37,10 @@ module JqUiDateSelect
     #
     # To not include the style sheet into the layout, just pass :style => :none
     # (false or nil will also work)
-    def jq_ui_date_select_includes(options = {})
+    def jquids_includes(options = {})
 
       # Set the format for the datepickers
-      JqUiDateSelect.format = options[:format] if options.has_key?(:format)
+      Jquids.format = options[:format] if options.has_key?(:format)
       html_out = ""
 
       if options.has_key?(:style)
@@ -49,8 +49,8 @@ module JqUiDateSelect
         html_out << stylesheet_link_tag(jq_ui_stylesheet) + "\n"
       end
 
-      jq_vrs = options.has_key?(:jQuery) ? options[:jQuery] : JqUiDateSelect::JQVersions.last
-      ui_vrs = options.has_key?(:jQueryUI) ? options[:jQueryUI] : JqUiDateSelect::UIVersions.last
+      jq_vrs = options.has_key?(:jQuery) ? options[:jQuery] : Jquids::JQVersions.last
+      ui_vrs = options.has_key?(:jQueryUI) ? options[:jQueryUI] : Jquids::UIVersions.last
       trtp_vrs = options.has_key?(:TRTimepicker) ? options[:TRTimepicker] : :none
 
       # A little bit of css of the timepicker, and it is not added if the
@@ -70,9 +70,9 @@ module JqUiDateSelect
       options[:datepicker_options][:selectOtherMonths] = true if options[:datepicker_options][:selectOtherMonths].nil?
       options[:datepicker_options][:changeMonth] = true if options[:datepicker_options][:changeMonth].nil?
       options[:datepicker_options][:changeYear] = true if options[:datepicker_options][:changeYear].nil?
-      options[:datepicker_options][:dateFormat] = JqUiDateSelect.format[:js_date]
+      options[:datepicker_options][:dateFormat] = Jquids.format[:js_date]
 
-      JqUiDateSelect.jq_ui_date_select_process_options(options)
+      Jquids.jquids_process_options(options)
 
       # Decides whether the 'to_json' method exists (part of rails 3) or if the
       # gem needs to us the json gem
@@ -97,8 +97,8 @@ module JqUiDateSelect
         # datepicker similar to the calendar_date_select with out making
         # modifications or having local dependencies)
         # Sets the time format based off of the current format
-        options[:timepicker_options][:ampm] = JqUiDateSelect.format[:ampm]
-        options[:timepicker_options][:timeFormat] = JqUiDateSelect.format[:tr_js_time]
+        options[:timepicker_options][:ampm] = Jquids.format[:ampm]
+        options[:timepicker_options][:timeFormat] = Jquids.format[:tr_js_time]
 
         timepicker_options = 
           if options[:timepicker_options].respond_to?(:to_json)
@@ -117,15 +117,15 @@ module JqUiDateSelect
       # A minified version of this javascript.
       #   <script type="text/javascript">
       #     $(document).ready(function(){
-      #       $(".jq_ui_ds_dp").each(function(){
+      #       $(".jquids_dp").each(function(){
       #         var s = $(this).attr("data-jquipicker");
       #         $(this).attr("data-jquipicker") ? $(this).datepicker(JSON.parse(s)) : $(this).datepicker();
       #       });
-      #       $(".jq_ui_ds_tp").each(function(){
+      #       $(".jquids_tp").each(function(){
       #         var s = $(this).attr("data-jquipicker");
       #         $(this).attr("data-jquipicker") ? $(this).timepicker(JSON.parse(s)) : $(this).timepicker();
       #       });
-      #       $(".jq_ui_ds_dtp").each(function(){
+      #       $(".jquids_dtp").each(function(){
       #         var s=$(this).attr("data-jquipicker");
       #         $(this).attr("data-jquipicker")?$(this).datetimepicker(JSON.parse(s)) : $(this).datetimepicker()
       #       })
@@ -133,7 +133,7 @@ module JqUiDateSelect
       #   </script>
       #
       # Used to parse out options for each datepicker instance
-      html_out << '$(document).ready(function(){$(".jq_ui_ds_dp").each(function(){var s=$(this).attr("data-jquipicker");$(this).attr("data-jquipicker")?$(this).datepicker(JSON.parse(s)):$(this).datepicker()});$(".jq_ui_ds_tp").each(function(){var s=$(this).attr("data-jquipicker");$(this).attr("data-jquipicker")?$(this).timepicker(JSON.parse(s)):$(this).timepicker()});$(".jq_ui_ds_dtp").each(function(){var s=$(this).attr("data-jquipicker");$(this).attr("data-jquipicker")?$(this).datetimepicker(JSON.parse(s)):$(this).datetimepicker()})});</script>'
+      html_out << '$(document).ready(function(){$(".jquids_dp").each(function(){var s=$(this).attr("data-jquipicker");$(this).attr("data-jquipicker")?$(this).datepicker(JSON.parse(s)):$(this).datepicker()});$(".jquids_tp").each(function(){var s=$(this).attr("data-jquipicker");$(this).attr("data-jquipicker")?$(this).timepicker(JSON.parse(s)):$(this).timepicker()});$(".jquids_dtp").each(function(){var s=$(this).attr("data-jquipicker");$(this).attr("data-jquipicker")?$(this).datetimepicker(JSON.parse(s)):$(this).datetimepicker()})});</script>'
 
       if html_out.respond_to?(:html_safe)
         return html_out.html_safe
