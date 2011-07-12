@@ -11,7 +11,7 @@ The projects intent is to simulate the ease of use of the original while:
 - Using the hosted jQuery UI infastructure to avoid local dependencies
 
 
-Jquids stands for *JQ*uery *UI* *D*ate *S*elect
+Jquids stands for JQuery UI Date Select
 
 
 Usage
